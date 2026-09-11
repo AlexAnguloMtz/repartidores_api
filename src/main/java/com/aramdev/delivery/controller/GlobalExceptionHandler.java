@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
     public ProblemDetail handle(MethodArgumentNotValidException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setTitle("Datos inválidos");
-        problemDetail.setProperty("error_code", "INVALID_FORM");
+        problemDetail.setProperty("error_code", "INVALID_FIELDS");
 
         List<ProblemDetailError> errors = ex.getBindingResult()
                 .getFieldErrors()
