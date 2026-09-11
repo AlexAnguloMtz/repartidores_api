@@ -37,7 +37,8 @@ public class GlobalExceptionHandler {
     public ProblemDetail handle(AuthenticationException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
         problemDetail.setTitle("Credenciales inválidas");
-        problemDetail.setProperty("error_code", "CREDENCIALES_INVALIDAS");
+        problemDetail.setDetail("Las credenciales no son válidas");
+        problemDetail.setProperty("error_code", "AUTENTICACION_INVALIDA");
         problemDetail.setProperty("errors", List.of());
         return problemDetail;
     }

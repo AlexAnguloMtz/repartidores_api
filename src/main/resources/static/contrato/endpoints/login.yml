@@ -1,9 +1,12 @@
 post:
+
+  security: []
+
   tags:
     - Autenticación
 
   description: |
-    **Códigos de error:** `CREDENCIALES_INVALIDAS`
+    **Códigos de error:** `AUTENTICACION_INVALIDA`
 
   requestBody:
     required: true

@@ -4,8 +4,9 @@
 
 Para mantener consistencia en la integración del cliente (Frontend / Consumidores), **todos los errores** devueltos por la API responden bajo una misma estructura basada en el estándar **RFC 9457 (Problem Details for HTTP APIs)** mediante el esquema `ProblemDetail`.
 
-Existen dos códigos de error **globales** que pueden ocurrir independientemente del endpoint:
+Existen **TRES** códigos de error **GLOBALES** que pueden ocurrir en **TODOS** los endpoints:
 
+* **`AUTENTICACION_INVALIDA`**: La token de acceso es inválida, o expiró. También cuando las credenciales para login son inválidas.
 * **`CAMPOS_INVALIDOS`**: La petición contiene uno o más campos inválidos. El arreglo `errors` contiene el detalle de cada campo mediante objetos con la estructura `{ field, error }`.
 * **`ERROR_SERVIDOR`**: Ocurrió un error interno inesperado en el servidor.
 
@@ -23,7 +24,7 @@ Cada vez que un endpoint retorne un error, el cuerpo de la respuesta contendrá 
 * **`title`** *(string)*: Breve resumen legible por humanos del tipo de problema.
 * **`status`** *(integer)*: El código de estado HTTP correspondiente.
 * **`detail`** *(string)*: Explicación detallada del error particular.
-* **`errors`** *(array, opcional)*: Presente únicamente cuando la petición involucra validación de formularios. Contiene objetos con la estructura `{ field, error }`, donde `field` identifica el campo inválido y `error` describe el fallo.
+* **`errors`** *(array)*: Cuando el `error_code` es `CAMPOS_INVALIDOS`, contiene objetos con la estructura `{ field, error }`, donde `field` identifica el campo inválido y `error` describe el fallo.
 
 ---
 
@@ -78,4 +79,5 @@ Respuesta cuando falle la validación de uno o varios campos enviados por el cli
 
 1. **Parseo primario:** Evalúa siempre el campo `error_code` para determinar el mensaje a mostrar al usuario. Los códigos de error específicos posibles están documentados directamente en cada endpoint.
 2. **Formularios:** Si un formulario tiene campos inválidos, el código es `CAMPOS_INVALIDOS` y el arreglo `errors` debe ser iterado para manejar cada objeto de tipo `ProblemDetailError`, con la estructura `{ field, error }`.
-3. **Campos que puedes ignorar:** Los campos obligatorios a utilizar de un `ProblemDetails` son `error_code` y `error_
+3. **Campos que puedes ignorar:** Los campos obligatorios a utilizar de un `ProblemDetails` son `error_code` 
+4. **Ignora los Status Code**: Para programar lo más rápido posible vamos a ignorar todos los Status Code diferente a `200 OK`.  Para tomar decisiones en el manejo de errores, vamos a usar  el campo `error_code` del objeto `ProblemDetails`.
