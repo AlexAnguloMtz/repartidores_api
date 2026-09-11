@@ -16,7 +16,7 @@ Cada vez que un endpoint retorne un código HTTP `4xx` o `5xx`, el cuerpo de la 
 
 ### Campos Principales
 
-* **`error_code`** *(string)*: **Campo clave.** Es una cadena parseable de tipo *enum* en mayúsculas (ej. `BAD_CREDENTIALS`, `USER_NOT_FOUND`, `VALIDATION_FAILED`). El cliente debe utilizar este código para decidir qué mensaje o flujo mostrar al usuario final.
+* **`error_code`** *(string)*: **Campo clave.** Es una cadena parseable de tipo *enum* en mayúsculas (ej. `BAD_CREDENTIALS`, `USER_NOT_FOUND`, `VALIDATION_FAILED`). El cliente debe utilizar este código para decidir qué mensaje o flujo mostrar al usuario final. Para conocer todos los codigos de error posible en un endpoint, dentro del archivo YAML de dicho endpoint se van a numerar todos los posibles.  
 * **`title`** *(string)*: Breve resumen legible por humanos del tipo de problema.
 * **`status`** *(integer)*: El código de estado HTTP correspondiente.
 * **`detail`** *(string)*: Explicación detallada del error particular ocurrido.
