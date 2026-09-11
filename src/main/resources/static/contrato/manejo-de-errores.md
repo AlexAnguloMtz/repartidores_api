@@ -6,8 +6,8 @@ Para mantener consistencia en la integración del cliente (Frontend / Consumidor
 
 Existen dos códigos de error **globales** que pueden ocurrir independientemente del endpoint:
 
-* **`INVALID_FIELDS`**: La petición contiene uno o más campos inválidos. El arreglo `errors` contiene el detalle de cada campo mediante objetos con la estructura `{ field, error }`.
-* **`SERVER_ERROR`**: Ocurrió un error interno inesperado en el servidor.
+* **`CAMPOS_INVALIDOS`**: La petición contiene uno o más campos inválidos. El arreglo `errors` contiene el detalle de cada campo mediante objetos con la estructura `{ field, error }`.
+* **`ERROR_SERVIDOR`**: Ocurrió un error interno inesperado en el servidor.
 
 Además de estos códigos globales, cada operación puede definir sus propios códigos de error específicos. **Cada endpoint indica directamente en su documentación cuáles son los códigos de error específicos que pueden ocurrir según el caso.**
 
@@ -58,7 +58,7 @@ Respuesta cuando falle la validación de uno o varios campos enviados por el cli
   "title": "Validation failed",
   "status": 400,
   "detail": "Errores de validacion",
-  "error_code": "INVALID_FIELDS",
+  "error_code": "CAMPOS_INVALIDOS",
   "errors": [
     {
       "field": "email",

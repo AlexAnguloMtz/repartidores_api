@@ -3,7 +3,7 @@ post:
     - Autenticación
 
   description: |
-    **Códigos de error:** `BAD_CREDENTIALS`
+    **Códigos de error:** `CREDENCIALES_INVALIDAS`
 
   requestBody:
     required: true

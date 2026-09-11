@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
     public ProblemDetail handle(MethodArgumentNotValidException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setTitle("Datos inválidos");
-        problemDetail.setProperty("error_code", "INVALID_FIELDS");
+        problemDetail.setProperty("error_code", "CAMPOS_INVALIDOS");
 
         List<ProblemDetailError> errors = ex.getBindingResult()
                 .getFieldErrors()
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
     public ProblemDetail handle(AuthenticationException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
         problemDetail.setTitle("Credenciales inválidas");
-        problemDetail.setProperty("error_code", "BAD_CREDENTIALS");
+        problemDetail.setProperty("error_code", "CREDENCIALES_INVALIDAS");
         problemDetail.setProperty("errors", List.of());
         return problemDetail;
     }
@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
     public ProblemDetail handle(Exception ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         problemDetail.setTitle("Error del servidor");
-        problemDetail.setProperty("error_code", "SERVER_ERROR");
+        problemDetail.setProperty("error_code", "ERROR_SERVIDOR");
         problemDetail.setProperty("errors", List.of());
         return problemDetail;
     }
