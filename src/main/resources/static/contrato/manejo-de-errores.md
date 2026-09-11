@@ -77,5 +77,5 @@ Respuesta cuando falle la validación de uno o varios campos enviados por el cli
 ## Guía para Clientes (Consumidores)
 
 1. **Parseo primario:** Evalúa siempre el campo `error_code` para determinar el mensaje a mostrar al usuario. Los códigos de error específicos posibles están documentados directamente en cada endpoint.
-2. **Formularios:** Si un formulario tiene campos inválidos, el código es `INVALID_FIELDS` y el arreglo `errors` debe ser iterado para manejar cada objeto de tipo `ProblemDetailError`, con la estructura `{ field, error }`.
+2. **Formularios:** Si un formulario tiene campos inválidos, el código es `CAMPOS_INVALIDOS` y el arreglo `errors` debe ser iterado para manejar cada objeto de tipo `ProblemDetailError`, con la estructura `{ field, error }`.
 3. **Campos que puedes ignorar:** Los campos obligatorios a utilizar de un `ProblemDetails` son `error_code` y `error_
