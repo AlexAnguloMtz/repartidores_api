@@ -1,66 +1,66 @@
-  post:
-    tags:
-      - Autenticación
+post:
+  tags:
+    - Autenticación
 
-    requestBody:
-      required: true
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required: [email, password]
+          properties:
+            email:
+              type: string
+            password:
+              type: string
+
+  responses:
+    '200':
+      description: OK
       content:
         application/json:
           schema:
-            type: object
-            required: [email, password]
-            properties:
-              email:
-                type: string
-              password:
-                type: string
+            $ref: '../schema/LoginResponse.yml'
 
-    responses:
-      '200':
-        description: OK
-        content:
-          application/json:
-            schema:
-              $ref: '../schema/LoginResponse.yml'
+    '400':
+      description: Credenciales incorrectas
+      content:
+        application/problem+json:
+          schema:
+            allOf:
+              - $ref: '../schema/ProblemDetail.yml'
+              - type: object
+                properties:
+                  error_code:
+                    type: string
+                    enum:
+                      - BAD_CREDENTIALS
+          example:
+            type: https://api.domain.com/errors/bad-credentials
+            title: Credenciales incorrectas
+            status: 400
+            detail: El correo electrónico o la contraseña son incorrectos.
+            instance: /api/auth/login
+            error_code: BAD_CREDENTIALS
 
-      '400':
-        description: Credenciales incorrectas
-        content:
-          application/problem+json:
-            schema:
-              allOf:
-                - $ref: '../schema/ProblemDetail.yml'
-                - type: object
-                  properties:
-                    error_code:
-                      type: string
-                      enum:
-                        - BAD_CREDENTIALS
-            example:
-              type: https://api.domain.com/errors/bad-credentials
-              title: Credenciales incorrectas
-              status: 400
-              detail: El correo electrónico o la contraseña son incorrectos.
-              instance: /api/auth/login
-              error_code: BAD_CREDENTIALS
-
-      '500':
-        description: Error interno del servidor
-        content:
-          application/problem+json:
-            schema:
-              allOf:
-                - $ref: '../schema/ProblemDetail.yml'
-                - type: object
-                  properties:
-                    error_code:
-                      type: string
-                      enum:
-                        - SERVER_ERROR
-            example:
-              type: https://api.domain.com/errors/server-error
-              title: Error interno del servidor
-              status: 500
-              detail: Ocurrió un error inesperado en el servidor.
-              instance: /api/auth/login
-              error_code: SERVER_ERROR
+    '500':
+      description: Error interno del servidor
+      content:
+        application/problem+json:
+          schema:
+            allOf:
+              - $ref: '../schema/ProblemDetail.yml'
+              - type: object
+                properties:
+                  error_code:
+                    type: string
+                    enum:
+                      - SERVER_ERROR
+          example:
+            type: https://api.domain.com/errors/server-error
+            title: Error interno del servidor
+            status: 500
+            detail: Ocurrió un error inesperado en el servidor.
+            instance: /api/auth/login
+            error_code: SERVER_ERROR
