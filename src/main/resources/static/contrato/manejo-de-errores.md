@@ -1,4 +1,4 @@
-# Guía de Arquitectura y Manejo de Errores
+# Manejo de Errores
 
 ## Filosofía General
 
