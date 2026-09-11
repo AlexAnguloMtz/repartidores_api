@@ -1,0 +1,4 @@
+paths:
+  /api/auth/login:
+    post:
+      - BAD_CREDENTIALS

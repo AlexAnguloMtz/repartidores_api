@@ -22,20 +22,3 @@ post:
         application/json:
           schema:
             $ref: '../schema/LoginResponse.yml'
-
-    '400':
-      description: Credenciales incorrectas
-      content:
-        application/problem+json:
-          schema:
-            oneOf:
-              - allOf:
-                  - $ref: '../schema/ProblemDetail.yml'
-                  - type: object
-                    required:
-                      - error_code
-                    properties:
-                      error_code:
-                        type: string
-                        enum:
-                          - BAD_CREDENTIALS
