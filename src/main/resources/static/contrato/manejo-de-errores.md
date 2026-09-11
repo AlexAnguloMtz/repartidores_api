@@ -43,10 +43,10 @@ Cada objeto dentro de `errors` es un `ProblemDetailError`, el cual tiene la sigu
 
 ```json
 {
-  "title": "Authentication Failed",
+  "title": "Authentication Inválida",
   "status": 401,
-  "detail": "The credentials provided are invalid or have expired.",
-  "error_code": "BAD_CREDENTIALS"
+  "detail": "La autenticación es inválida",
+  "error_code": "AUTENTICACION_INVALIDA"
 }
 ```
 
