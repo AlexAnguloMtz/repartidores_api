@@ -1,7 +1,12 @@
-openapi: 3.0.3
-info:
-  title: API Logistica
-  version: 1.0.0
-paths:
-  /api/auth/login:
-    $ref: './endpoints/login.yml'
+  openapi: 3.0.3
+  info:
+    title: API Logistica
+    version: 1.0.0
+
+  tags:
+    - name: Autenticación
+      description: Operaciones de autenticación
+
+  paths:
+    /api/auth/login:
+      $ref: './endpoints/login.yml'
