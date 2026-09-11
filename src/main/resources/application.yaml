@@ -1,3 +1,21 @@
 spring:
   application:
     name: delivery
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        default_batch_fetch_size: 32
+        jdbc:
+          batch_size: 32
+
+auth:
+  jwt:
+    secret: anjsknfau82h3hf29hf98ej8sfj9ja89nfja9jfdn928nf902i9knfjiaosfds
+    expiration-seconds: 86400

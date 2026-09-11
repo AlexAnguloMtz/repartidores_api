@@ -2,7 +2,7 @@ LoginResponse:
   type: object
   required:
     - email
-    - role
+    - rol
     - accessToken
   properties:
     email:
