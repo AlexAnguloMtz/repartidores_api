@@ -2,6 +2,9 @@ post:
   tags:
     - Autenticación
 
+  description: |
+    **Códigos de error:** `BAD_CREDENTIALS`
+
   requestBody:
     required: true
     content:
