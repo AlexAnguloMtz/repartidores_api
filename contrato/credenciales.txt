@@ -1,0 +1,34 @@
+ADMINISTRADORES
+
+ADMINISTRADOR_1@gmail.com
+Contraseña: ADMINISTRADOR123!
+
+ADMINISTRADOR_2@gmail.com
+Contraseña: ADMINISTRADOR123!
+
+ADMINISTRADOR_3@gmail.com
+Contraseña: ADMINISTRADOR123!
+
+
+REPARTIDORES
+
+REPARTIDOR_1@gmail.com
+Contraseña: REPARTIDOR123!
+
+REPARTIDOR_2@gmail.com
+Contraseña: REPARTIDOR123!
+
+REPARTIDOR_3@gmail.com
+Contraseña: REPARTIDOR123!
+
+
+CLIENTES
+
+CLIENTE_1@gmail.com
+Contraseña: CLIENTE123!
+
+CLIENTE_2@gmail.com
+Contraseña: CLIENTE123!
+
+CLIENTE_3@gmail.com
+Contraseña: CLIENTE123!
