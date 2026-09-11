@@ -1,27 +1,39 @@
-ProblemDetail:
-  type: object
-  required:
-    - type
-    - title
-    - status
-    - error_code
-    - errors
-  properties:
-    type:
-      type: string
-      format: uri
-    title:
-      type: string
-    status:
-      type: integer
-    detail:
-      type: string
-    instance:
-      type: string
-      format: uri
-    error_code:
-      type: string
-    errors:
-      type: array
-      items:
-        type: string
+type: object
+description: >-
+  Esquema estandarizado basado para representar detalles de errores devueltos por la API.
+required:
+  - title
+  - status
+  - error_code
+properties:
+  type:
+    type: string
+    format: uri
+    description: URI de referencia que identifica el tipo de problema.
+    example: "https://api.domain.com/errors/validation-failed"
+  title:
+    type: string
+    description: Resumen breve e inteligible por humanos del tipo de problema.
+    example: "Invalid Form Input"
+  status:
+    type: integer
+    description: Código de estado HTTP devuelto por el servidor originario.
+    example: 400
+  detail:
+    type: string
+    description: Explicación detallada y específica de la causa de este problema.
+    example: "One or more fields failed validation checks."
+  instance:
+    type: string
+    format: uri
+    description: URI que identifica la ocurrencia específica del problema.
+    example: "/api/v1/users/checkout"
+  error_code:
+    type: string
+    description: Código de error parseable para decisiones de flujo en el cliente.
+    example: "VALIDATION_FAILED"
+  errors:
+    type: array
+    description: Lista desglosada de errores por campo cuando se trata de validaciones.
+    items:
+      $ref: './ProblemDetailError.yml'

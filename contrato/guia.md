@@ -76,3 +76,5 @@ Respuesta cuando falle la validación de uno o varios campos enviados por el cli
 1. **Parseo primario:** Evalúa siempre el campo `error_code` para determinar el mensaje a mostrar al usuario. En cada archivo YAML de cada endpoint estarán todos los codigos de error posibles numerados. 
 
 2. **Formularios:** Si un formulario tiene campos invalidos, el codigo es `INVALID_FORM` y el arreglo `errors` debe ser iterado para manejar cada objeto de tipo ProblemDetailError, con la estructura `{ field, error }`.
+
+2. **Campos que puedes ignorar:** Los campos obligatorios a utilizar de un ProblemDetails son `error_code` y `errors`. Realmente, otros demas campos (`title`, `detail`, `instance`) puedes ignorarlos y no habrá mucha diferencia.

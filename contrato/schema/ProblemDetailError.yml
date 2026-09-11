@@ -1,0 +1,16 @@
+type: object
+description: >-
+  Representa el detalle de error de un campo específico en validaciones de
+  formulario o datos de entrada.
+required:
+  - field
+  - error
+properties:
+  field:
+    type: string
+    description: Nombre del campo o propiedad que falló en la validación.
+    example: "email"
+  error:
+    type: string
+    description: Error específico asociado al campo.
+    example: "Correo invalido"
