@@ -77,4 +77,6 @@ Respuesta cuando falle la validación de uno o varios campos enviados por el cli
 
 2. **Formularios:** Si un formulario tiene campos invalidos, el codigo es `INVALID_FORM` y el arreglo `errors` debe ser iterado para manejar cada objeto de tipo ProblemDetailError, con la estructura `{ field, error }`.
 
-2. **Campos que puedes ignorar:** Los campos obligatorios a utilizar de un ProblemDetails son `error_code` y `errors`. Realmente, otros demas campos (`title`, `detail`, `instance`) puedes ignorarlos y no habrá mucha diferencia.
+3. **Campos que puedes ignorar:** Los campos obligatorios a utilizar de un ProblemDetails son `error_code` y `errors`. Realmente, otros demas campos (`title`, `detail`, `instance`) puedes ignorarlos y no habrá mucha diferencia.
+
+3. **Ignora los STATUS CODE:** Para programar lo más rápido posible, vamos a ignorar completamente los status code, y el campo `error_code` va a ser la autoridad total en cuanto a cuál fue el error exacto. El error genérico 500 siempre vendrá con `error_code` "SERVER_ERROR".
