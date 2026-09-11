@@ -33,7 +33,13 @@ public class HttpSecurityConfiguration {
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/auth/login").permitAll();
+            auth.requestMatchers("/api/auth/login").permitAll();
+            auth.requestMatchers("/api-docs").permitAll();
+            auth.requestMatchers("/api-docs/**").permitAll();
+            auth.requestMatchers("/swagger-ui/**").permitAll();
+            auth.requestMatchers("/swagger-ui.html").permitAll();
+            auth.requestMatchers("/swagger-ui/index.html").permitAll();
+            auth.requestMatchers("/contrato/**").permitAll();
             auth.anyRequest().authenticated();
         });
 

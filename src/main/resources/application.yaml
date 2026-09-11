@@ -15,6 +15,12 @@ spring:
         jdbc:
           batch_size: 32
 
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    url: /contrato/openapi.yml
+
 auth:
   jwt:
     secret: anjsknfau82h3hf29hf98ej8sfj9ja89nfja9jfdn928nf902i9knfjiaosfds
