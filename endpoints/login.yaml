@@ -1,0 +1,40 @@
+/auth/login:
+  post:
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [email, password]
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: '../schema/LoginResponse.yml'
+
+      '400':
+        description: Bad credentials
+        content:
+          application/problem+json:
+            schema:
+              $ref: '../schema/ProblemDetail.yml'
+            example:
+              error_code: BAD_CREDENTIALS
+
+      '500':
+        description: Server error
+        content:
+          application/problem+json:
+            schema:
+              $ref: '../schema/ProblemDetail.yml'
+            example:
+              error_code: SERVER_ERROR

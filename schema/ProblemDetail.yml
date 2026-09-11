@@ -1,0 +1,27 @@
+ProblemDetail:
+  type: object
+  required:
+    - type
+    - title
+    - status
+    - error_code
+    - errors
+  properties:
+    type:
+      type: string
+      format: uri
+    title:
+      type: string
+    status:
+      type: integer
+    detail:
+      type: string
+    instance:
+      type: string
+      format: uri
+    error_code:
+      type: string
+    errors:
+      type: array
+      items:
+        type: string

@@ -1,0 +1,13 @@
+LoginResponse:
+  type: object
+  required:
+    - email
+    - role
+    - accessToken
+  properties:
+    email:
+      type: string
+    role:
+      type: string
+    accessToken:
+      type: string
