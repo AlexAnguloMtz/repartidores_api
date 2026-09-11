@@ -1,8 +1,4 @@
-# API Contract - Guía de Arquitectura y Manejo de Errores
-
-Este repositorio contiene las especificaciones y contratos OpenAPI (YAML) que definen la comunicación con la API.
-
----
+# Guía de Arquitectura y Manejo de Errores
 
 ## Filosofía General
 
