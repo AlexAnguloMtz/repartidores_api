@@ -6,35 +6,38 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "centros_distribucion")
+@Table(name = "unidades")
 @Getter
 @Setter
 @ToString(onlyExplicitlyIncluded = true)
-public class CentroDistribucion {
+public class Unidad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ToString.Include
-    private Integer idCentro;
+    private Integer idUnidad;
 
     @ToString.Include
-    private String nombre;
-    private String ciudad;
-    private String direccion;
+    private String codigoUnidad;
+
+    private String placas;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_centro")
+    private CentroDistribucion centroDistribucion;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CentroDistribucion other)) {
+        if (!(o instanceof Unidad other)) {
             return false;
         }
-        return idCentro != null && idCentro.equals(other.idCentro);
+        return idUnidad != null && idUnidad.equals(other.idUnidad);
     }
 
     @Override
     public int hashCode() {
         return getClass().hashCode();
     }
-
 
 }

@@ -46,7 +46,7 @@ public class CentroDistribucionController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMINISTRADOR')")
-    public ResponseEntity<CentroDistribucionResponse> createCentroDistribucion(
+    public ResponseEntity<CentroDistribucionResponse> updateCentroDistribucion(
             @PathVariable Integer id,
             @Valid @RequestBody CentroDistribucionRequest request
     ) {

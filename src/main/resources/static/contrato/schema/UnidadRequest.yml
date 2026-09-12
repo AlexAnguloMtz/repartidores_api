@@ -1,0 +1,9 @@
+type: object
+required:
+  - idCentro
+  - placas
+properties:
+  idCentro:
+    type: integer
+  placas:
+    type: string

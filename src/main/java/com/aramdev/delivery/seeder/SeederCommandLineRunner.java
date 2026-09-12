@@ -11,12 +11,14 @@ public class SeederCommandLineRunner implements CommandLineRunner {
 
     private final UsuarioSeeder usuarioSeeder;
     private final CentroDistribucionSeeder centroDistribucionSeeder;
+    private final UnidadSeeder unidadSeeder;
 
     @Override
     @Transactional
     public void run(String... args) throws Exception {
         usuarioSeeder.seed();
         centroDistribucionSeeder.seed();
+        unidadSeeder.seed();
     }
 
 }

@@ -21,6 +21,8 @@ tags:
 
   - name: Centros de Distribucion
 
+  - name: Unidades
+
 paths:
 
   /api/auth/login:
@@ -37,3 +39,9 @@ paths:
 
   /api/centros-distribucion/{id}:
     $ref: './endpoints/centro-distribucion.yml'
+
+  /api/unidades:
+    $ref: './endpoints/unidades.yml'
+
+  /api/unidades/{id}:
+    $ref: './endpoints/unidad.yml'

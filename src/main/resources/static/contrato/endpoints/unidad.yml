@@ -1,0 +1,82 @@
+get:
+
+  tags:
+    - Unidades
+
+  description: |
+
+    **Permisos requeridos:** `ADMINISTRADOR`
+
+    **Códigos de error:** `UNIDAD_NO_ENCONTRADO`
+
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+
+  responses:
+    '200':
+      content:
+        application/json:
+          schema:
+            $ref: '../schema/UnidadResponse.yml'
+
+
+put:
+
+  tags:
+    - Unidades
+
+  description: |
+
+    **Permisos requeridos:** `ADMINISTRADOR`
+
+    **Códigos de error:** `UNIDAD_NO_ENCONTRADO`, `CENTRO_NO_ENCONTRADO`
+
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schema/UnidadRequest.yml'
+
+  responses:
+    '200':
+      content:
+        application/json:
+          schema:
+            $ref: '../schema/UnidadResponse.yml'
+
+
+delete:
+
+  tags:
+    - Unidades
+
+  description: |
+
+    **Permisos requeridos:** `ADMINISTRADOR`
+
+    **Códigos de error:** `UNIDAD_NO_ENCONTRADO`
+
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+  responses:
+    '200':
+      description: Eliminado correctamente

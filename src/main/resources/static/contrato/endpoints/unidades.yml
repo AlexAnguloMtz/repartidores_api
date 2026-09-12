@@ -1,7 +1,7 @@
 get:
 
   tags:
-    - Usuarios
+    - Unidades
 
   description: |
 
@@ -9,7 +9,7 @@ get:
 
   parameters:
 
-    - name: idUsuario
+    - name: idUnidad
       in: query
       required: false
       schema:
@@ -17,33 +17,7 @@ get:
         items:
           type: integer
 
-    - name: nombre
-      in: query
-      required: false
-      schema:
-        type: array
-        items:
-          type: string
-
-    - name: email
-      in: query
-      required: false
-      schema:
-        type: array
-        items:
-          type: string
-
-    - name: telefono
-      in: query
-      required: false
-      schema:
-        type: array
-        maxItems: 20
-        items:
-          type: string
-          maxLength: 10
-
-    - name: idRol
+    - name: idCentro
       in: query
       required: false
       schema:
@@ -51,19 +25,21 @@ get:
         items:
           type: integer
 
-    - name: fechaRegistroMin
+    - name: codigoUnidad
       in: query
       required: false
       schema:
-        type: string
-        format: date-time
+        type: array
+        items:
+          type: string
 
-    - name: fechaRegistroMax
+    - name: placas
       in: query
       required: false
       schema:
-        type: string
-        format: date-time
+        type: array
+        items:
+          type: string
 
     - name: pageNumber
       in: query
@@ -83,18 +59,14 @@ get:
       schema:
         type: string
         enum:
-          - idUsuario-asc
-          - idUsuario-desc
-          - rol-asc
-          - rol-desc
-          - nombre-asc
-          - nombre-desc
-          - email-asc
-          - email-desc
-          - telefono-asc
-          - telefono-desc
-          - fechaRegistro-asc
-          - fechaRegistro-desc
+          - idUnidad-asc
+          - idUnidad-desc
+          - nombreCentro-asc
+          - nombreCentro-desc
+          - codigoUnidad-asc
+          - codigoUnidad-desc
+          - placas-asc
+          - placas-desc
 
   responses:
     '200':
@@ -110,29 +82,29 @@ get:
                   items:
                     type: array
                     items:
-                      $ref: '../schema/UsuarioResponse.yml'
+                      $ref: '../schema/UnidadResponse.yml'
 
 post:
 
   tags:
-    - Usuarios
+    - Unidades
 
   description: |
     
     **Permisos requeridos:** `ADMINISTRADOR`
-
-    **Códigos de error:** `CORREO_DUPLICADO`, `ROL_NO_ENCONTRADO`
+    
+    **Códigos de error:** `CENTRO_NO_ENCONTRADO`
 
   requestBody:
     required: true
     content:
       application/json:
         schema:
-          $ref: '../schema/UsuarioCreationRequest.yml'
+          $ref: '../schema/UnidadRequest.yml'
 
   responses:
     '200':
       content:
         application/json:
           schema:
-            $ref: '../schema/UsuarioResponse.yml'
+            $ref: '../schema/UnidadResponse.yml'

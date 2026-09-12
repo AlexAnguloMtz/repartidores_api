@@ -1,0 +1,18 @@
+type: object
+required:
+  - idUnidad
+  - codigoUnidad
+  - placas
+  - idCentro
+  - nombreCentro
+properties:
+  idUnidad:
+    type: integer
+  codigoUnidad:
+    type: string
+  placas:
+    type: string
+  idCentro:
+    type: integer
+  nombreCentro:
+    type: string
