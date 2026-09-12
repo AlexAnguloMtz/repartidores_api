@@ -11,6 +11,7 @@ import com.aramdev.delivery.exception.BusinessValidationException;
 import com.aramdev.delivery.persistence.CentroDistribucionRepository;
 import com.aramdev.delivery.persistence.UnidadRepository;
 import com.aramdev.delivery.persistence.UnidadSpecifications;
+import com.aramdev.delivery.util.DeletionSummaryResponse;
 import com.aramdev.delivery.util.OffsetPaginationRequest;
 import com.aramdev.delivery.util.OffsetPaginationResponse;
 import com.aramdev.delivery.util.PaginationUtils;
@@ -22,9 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -103,8 +102,16 @@ public class UnidadService {
     }
 
     @Transactional
-    public void deleteUnidades(List<Integer> ids) {
-        unidadRepository.deleteAllById(ids);
+    public DeletionSummaryResponse<Integer> deleteUnidades(Set<Integer> ids) {
+        Set<Integer> notDeletedIds = unidadRepository.findAllIdsWithRelations(ids);
+
+        ids.removeAll(notDeletedIds);
+
+        if (!ids.isEmpty()) {
+            unidadRepository.deleteAllByIdInBatch(ids);
+        }
+
+        return new DeletionSummaryResponse<>(ids, notDeletedIds);
     }
 
     private Sort parseSort(String sort) {

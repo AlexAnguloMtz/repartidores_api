@@ -6,6 +6,7 @@ import com.aramdev.delivery.dto.UsuarioResponse;
 import com.aramdev.delivery.dto.UsuarioUpdateRequest;
 import com.aramdev.delivery.service.*;
 import com.aramdev.delivery.util.CustomUserDetails;
+import com.aramdev.delivery.util.DeletionSummaryResponse;
 import com.aramdev.delivery.util.OffsetPaginationRequest;
 import com.aramdev.delivery.util.OffsetPaginationResponse;
 import jakarta.validation.Valid;
@@ -15,7 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -26,7 +27,7 @@ public class UsuarioController {
     private final GetUsuario getUsuario;
     private final CreateUsuario createUsuario;
     private final UpdateUsuario updateUsuario;
-    private final DeleteUsuario deleteUsuario;
+    private final DeleteUsuarios deleteUsuarios;
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMINISTRADOR')")
@@ -64,12 +65,11 @@ public class UsuarioController {
 
     @DeleteMapping
     @PreAuthorize("hasAuthority('ADMINISTRADOR')")
-    public ResponseEntity<Void> deleteUsuario(
-            @RequestParam(name = "idUsuario") List<Long> ids,
+    public ResponseEntity<DeletionSummaryResponse<Long>> deleteUsuario(
+            @RequestParam(name = "idUsuario") Set<Long> ids,
             @AuthenticationPrincipal CustomUserDetails currentUser
     ) {
-        deleteUsuario.run(ids, currentUser);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(deleteUsuarios.run(ids, currentUser));
     }
 
 }

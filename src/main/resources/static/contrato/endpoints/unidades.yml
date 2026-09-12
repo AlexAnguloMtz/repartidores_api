@@ -129,4 +129,20 @@ delete:
 
   responses:
     '200':
-      description: Eliminado correctamente
+      description: Los registros no eliminados tienen recursos asociados que impiden su eliminación.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - deletedIds
+              - notDeletedIds
+            properties:
+              deletedIds:
+                type: array
+                items:
+                  type: integer
+              notDeletedIds:
+                type: array
+                items:
+                  type: integer

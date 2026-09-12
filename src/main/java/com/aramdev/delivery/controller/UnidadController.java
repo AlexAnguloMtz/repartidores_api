@@ -2,6 +2,7 @@ package com.aramdev.delivery.controller;
 
 import com.aramdev.delivery.dto.*;
 import com.aramdev.delivery.service.UnidadService;
+import com.aramdev.delivery.util.DeletionSummaryResponse;
 import com.aramdev.delivery.util.OffsetPaginationRequest;
 import com.aramdev.delivery.util.OffsetPaginationResponse;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -55,11 +57,10 @@ public class UnidadController {
 
     @DeleteMapping
     @PreAuthorize("hasAuthority('ADMINISTRADOR')")
-    public ResponseEntity<Void> deleteUnidad(
-            @RequestParam(name = "idUnidad") List<Integer> ids
+    public ResponseEntity<DeletionSummaryResponse<Integer>> deleteUnidad(
+            @RequestParam(name = "idUnidad") Set<Integer> ids
     ) {
-        unidadService.deleteUnidades(ids);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(unidadService.deleteUnidades(ids));
     }
 
 }

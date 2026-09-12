@@ -4,6 +4,7 @@ import com.aramdev.delivery.domain.CentroDistribucion;
 import com.aramdev.delivery.domain.CentroDistribucionErrorCodes;
 import com.aramdev.delivery.dto.CentroDistribucionRequest;
 import com.aramdev.delivery.dto.CentroDistribucionResponse;
+import com.aramdev.delivery.util.DeletionSummaryResponse;
 import com.aramdev.delivery.dto.GetCentrosDistribucionRequest;
 import com.aramdev.delivery.exception.BusinessValidationException;
 import com.aramdev.delivery.persistence.CentroDistribucionRepository;
@@ -19,8 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -95,10 +96,16 @@ public class CentroDistribucionService {
     }
 
     @Transactional
-    public void deleteCentrosDistribucion(List<Integer> ids) {
-        // TODO
-        // Verificar que los recursos anidados permiten eliminar (o no)
-        centroDistribucionRepository.deleteAllById(ids);
+    public DeletionSummaryResponse<Integer> deleteCentrosDistribucion(Set<Integer> ids) {
+        Set<Integer> notDeletedIds = centroDistribucionRepository.findAllIdsWithRelations(ids);
+
+        ids.removeAll(notDeletedIds);
+
+        if (!ids.isEmpty()) {
+            centroDistribucionRepository.deleteAllByIdInBatch(ids);
+        }
+
+        return new DeletionSummaryResponse<>(ids, notDeletedIds);
     }
 
     private Sort parseSort(String sort) {

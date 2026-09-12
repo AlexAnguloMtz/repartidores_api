@@ -4,6 +4,7 @@ import com.aramdev.delivery.dto.CentroDistribucionRequest;
 import com.aramdev.delivery.dto.CentroDistribucionResponse;
 import com.aramdev.delivery.dto.GetCentrosDistribucionRequest;
 import com.aramdev.delivery.service.CentroDistribucionService;
+import com.aramdev.delivery.util.DeletionSummaryResponse;
 import com.aramdev.delivery.util.OffsetPaginationRequest;
 import com.aramdev.delivery.util.OffsetPaginationResponse;
 import jakarta.validation.Valid;
@@ -12,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -57,11 +58,10 @@ public class CentroDistribucionController {
 
     @DeleteMapping
     @PreAuthorize("hasAuthority('ADMINISTRADOR')")
-    public ResponseEntity<Void> deleteCentroDistribucion(
-            @RequestParam(name = "idCentro") List<Integer> ids
+    public ResponseEntity<DeletionSummaryResponse<Integer>> deleteCentroDistribucion(
+            @RequestParam(name = "idCentro") Set<Integer> ids
     ) {
-        centroDistribucionService.deleteCentrosDistribucion(ids);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(centroDistribucionService.deleteCentrosDistribucion(ids));
     }
 
 }
