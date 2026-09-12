@@ -1,0 +1,25 @@
+type: object
+required:
+  - items
+  - pageNumber
+  - pageSize
+  - totalItems
+  - totalPages
+  - hasPreviousPage
+  - hasNextPage
+properties:
+  items:
+    type: array
+    items: {}
+  pageNumber:
+    type: integer
+  pageSize:
+    type: integer
+  totalItems:
+    type: integer
+  totalPages:
+    type: integer
+  hasPreviousPage:
+    type: boolean
+  hasNextPage:
+    type: boolean

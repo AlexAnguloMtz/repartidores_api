@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -37,7 +38,7 @@ public class GlobalExceptionHandler {
                 .stream()
                 .map(error -> new ProblemDetailError(
                         error.getField(),
-                        error.getDefaultMessage()
+                        error.getDefaultMessage() == null ? "" : StringUtils.capitalize(error.getDefaultMessage())
                 ))
                 .toList();
 
@@ -68,7 +69,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ProblemDetail handleAccessDenied(AccessDeniedException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
-        problemDetail.setTitle("Acceso denegado");
+        problemDetail.setTitle("Permisos insuficientes");
         problemDetail.setDetail("No tienes permisos para esta operación");
         problemDetail.setProperty("error_code", GlobalErrorCodes.PERMISOS_INSUFICIENTES.name());
         return problemDetail;

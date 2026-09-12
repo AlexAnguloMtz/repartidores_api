@@ -1,3 +1,110 @@
+get:
+
+  tags:
+    - Usuarios
+
+  description: |
+
+    **Permisos requeridos:** `ADMINISTRADOR`
+
+  parameters:
+
+    - name: idUsuario
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: integer
+
+    - name: email
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+
+    - name: telefono
+      in: query
+      required: false
+      schema:
+        type: array
+        maxItems: 20
+        items:
+          type: string
+          maxLength: 10
+
+    - name: idRol
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: integer
+
+    - name: fechaRegistroMin
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date-time
+
+    - name: fechaRegistroMax
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date-time
+
+    - name: pageNumber
+      in: query
+      required: false
+      schema:
+        type: integer
+
+    - name: pageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+
+    - name: sort
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - idUsuario-asc
+          - idUsuario-desc
+          - rol-asc
+          - rol-desc
+          - nombre-asc
+          - nombre-desc
+          - email-asc
+          - email-desc
+          - telefono-asc
+          - telefono-desc
+          - fechaRegistro-asc
+          - fechaRegistro-desc
+
+  responses:
+    '200':
+      description: Usuarios
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '../schema/OffsetPaginationResponse.yml'
+              - type: object
+                required:
+                  - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '../schema/UsuarioResponse.yml'
+
 post:
 
   tags:
