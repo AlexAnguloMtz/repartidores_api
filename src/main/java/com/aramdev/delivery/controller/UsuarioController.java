@@ -62,7 +62,7 @@ public class UsuarioController {
         return ResponseEntity.ok(updateUsuario.run(id, request));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @PreAuthorize("hasAuthority('ADMINISTRADOR')")
     public ResponseEntity<Void> deleteUsuario(
             @RequestParam(name = "idUsuario") List<Long> ids,
