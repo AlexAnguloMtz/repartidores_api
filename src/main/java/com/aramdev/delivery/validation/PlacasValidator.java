@@ -17,6 +17,11 @@ public class PlacasValidator implements ConstraintValidator<ValidPlacas, String>
 
         boolean valid = true;
 
+        if (value.length() < 6) {
+            addError(context, "Las placas no pueden tener menos de 6 caracteres");
+            valid = false;
+        }
+
         if (value.length() > 15) {
             addError(context, "Las placas no pueden tener más de 15 caracteres");
             valid = false;
