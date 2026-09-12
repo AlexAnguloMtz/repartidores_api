@@ -4,6 +4,7 @@ import com.aramdev.delivery.dto.UsuarioCreationRequest;
 import com.aramdev.delivery.dto.UsuarioResponse;
 import com.aramdev.delivery.dto.UsuarioUpdateRequest;
 import com.aramdev.delivery.service.CreateUsuario;
+import com.aramdev.delivery.service.GetUsuario;
 import com.aramdev.delivery.service.UpdateUsuario;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UsuarioController {
 
+    private final GetUsuario getUsuario;
     private final CreateUsuario createUsuario;
     private final UpdateUsuario updateUsuario;
 
@@ -25,6 +27,14 @@ public class UsuarioController {
             @Valid @RequestBody UsuarioCreationRequest request
     ) {
         return ResponseEntity.ok(createUsuario.run(request));
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMINISTRADOR')")
+    public ResponseEntity<UsuarioResponse> getUsuario(
+            @PathVariable Long id
+    ) {
+        return ResponseEntity.ok(getUsuario.run(id));
     }
 
     @PutMapping("/{id}")

@@ -8,14 +8,10 @@ import com.aramdev.delivery.dto.UsuarioUpdateRequest;
 import com.aramdev.delivery.exception.BusinessValidationException;
 import com.aramdev.delivery.persistence.RolRepository;
 import com.aramdev.delivery.persistence.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 @Service
 public class UpdateUsuario {
@@ -23,18 +19,18 @@ public class UpdateUsuario {
     private final UsuarioRepository usuarioRepository;
     private final RolRepository rolRepository;
     private final PasswordEncoder passwordEncoder;
-    private final String timeZoneId;
+    private final UsuarioMapper usuarioMapper;
 
     public UpdateUsuario(
             UsuarioRepository usuarioRepository,
             RolRepository rolRepository,
             PasswordEncoder passwordEncoder,
-            @Value("${globals.timezone}") String timeZoneId
-    ) {
+            UsuarioMapper usuarioMapper
+        ) {
         this.usuarioRepository = usuarioRepository;
         this.rolRepository = rolRepository;
         this.passwordEncoder = passwordEncoder;
-        this.timeZoneId = timeZoneId;
+        this.usuarioMapper = usuarioMapper;
     }
 
     @Transactional
@@ -72,15 +68,7 @@ public class UpdateUsuario {
 
         Usuario saved = usuarioRepository.save(usuario);
 
-        return new UsuarioResponse(
-                saved.getIdUsuario(),
-                saved.getRol().getIdRol(),
-                saved.getRol().getNombre(),
-                saved.getNombre(),
-                saved.getEmail(),
-                saved.getTelefono(),
-                LocalDateTime.ofInstant(saved.getFechaRegistro(), ZoneId.of(timeZoneId))
-        );
+        return usuarioMapper.toResponse(saved);
     }
 
 }

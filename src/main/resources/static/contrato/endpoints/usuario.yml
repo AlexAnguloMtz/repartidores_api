@@ -1,3 +1,28 @@
+get:
+
+  tags:
+    - Usuarios
+
+  description: |
+
+    **Permisos requeridos:** `ADMINISTRADOR`
+
+    **Códigos de error:** `USUARIO_NO_ENCONTRADO`
+
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+
+  responses:
+    '200':
+      content:
+        application/json:
+          schema:
+            $ref: '../schema/UsuarioResponse.yml'
+
 put:
 
   tags:
@@ -26,7 +51,6 @@ put:
 
   responses:
     '200':
-      description: Usuario actualizado correctamente
       content:
         application/json:
           schema:
