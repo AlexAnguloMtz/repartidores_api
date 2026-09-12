@@ -95,6 +95,8 @@ public class CentroDistribucionService {
 
     @Transactional
     public void deleteCentroDistribucion(Integer id) {
+        // TODO
+        //  verificar que no se rompe esto debido a la relacion con Unidades, y en dado caso, arreglarlo
         CentroDistribucion centroDistribucion = centroDistribucionRepository.findById(id)
                 .orElseThrow(() -> new BusinessValidationException(CentroDistribucionErrorCodes.CENTRO_NO_ENCONTRADO));
 
