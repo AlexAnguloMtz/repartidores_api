@@ -15,6 +15,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/usuarios")
 @RequiredArgsConstructor
@@ -63,10 +65,10 @@ public class UsuarioController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMINISTRADOR')")
     public ResponseEntity<Void> deleteUsuario(
-            @PathVariable Long id,
+            @RequestParam(name = "idUsuario") List<Long> ids,
             @AuthenticationPrincipal CustomUserDetails currentUser
     ) {
-        deleteUsuario.run(id, currentUser);
+        deleteUsuario.run(ids, currentUser);
         return ResponseEntity.ok().build();
     }
 

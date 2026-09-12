@@ -136,3 +136,27 @@ post:
         application/json:
           schema:
             $ref: '../schema/UsuarioResponse.yml'
+
+delete:
+
+  tags:
+    - Usuarios
+
+  description: |
+
+    **Permisos requeridos:** `ADMINISTRADOR`
+
+    **Códigos de error:** `BORRAR_CUENTA_PROPIA_NO_PERMITIDO`
+
+  parameters:
+    - name: idUsuario
+      in: query
+      required: true
+      schema:
+        type: array
+        items:
+          type: integer
+
+  responses:
+    '200':
+      description: Eliminado correctamente

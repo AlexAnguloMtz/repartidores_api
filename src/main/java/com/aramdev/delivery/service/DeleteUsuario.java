@@ -1,6 +1,5 @@
 package com.aramdev.delivery.service;
 
-import com.aramdev.delivery.domain.Usuario;
 import com.aramdev.delivery.domain.UsuarioErrorCodes;
 import com.aramdev.delivery.exception.BusinessValidationException;
 import com.aramdev.delivery.persistence.UsuarioRepository;
@@ -9,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class DeleteUsuario {
@@ -16,19 +17,16 @@ public class DeleteUsuario {
     private final UsuarioRepository usuarioRepository;
 
     @Transactional
-    public void run(Long id, CustomUserDetails currentUser) {
-        if (id.equals(currentUser.getUserId())) {
-            throw new BusinessValidationException(
-                    UsuarioErrorCodes.BORRAR_CUENTA_PROPIA_NO_PERMITIDO
-            );
-        }
+    public void run(List<Long> ids, CustomUserDetails currentUser) {
+        ids.forEach((anId) -> {
+            if (currentUser.getUserId().equals(anId)) {
+                throw new BusinessValidationException(
+                        UsuarioErrorCodes.BORRAR_CUENTA_PROPIA_NO_PERMITIDO
+                );
+            }
+        });
 
-        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() ->
-                new BusinessValidationException(
-                        UsuarioErrorCodes.USUARIO_NO_ENCONTRADO
-                ));
-
-        usuarioRepository.delete(usuario);
+        usuarioRepository.deleteAllById(ids);
     }
 
 }
