@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -102,11 +103,8 @@ public class UnidadService {
     }
 
     @Transactional
-    public void deleteUnidad(Integer id) {
-        Unidad unidad = unidadRepository.findById(id)
-                .orElseThrow(() -> new BusinessValidationException(UnidadErrorCodes.UNIDAD_NO_ENCONTRADO));
-
-        unidadRepository.delete(unidad);
+    public void deleteUnidades(List<Integer> ids) {
+        unidadRepository.deleteAllById(ids);
     }
 
     private Sort parseSort(String sort) {

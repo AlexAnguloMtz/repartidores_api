@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/unidades")
@@ -51,12 +53,12 @@ public class UnidadController {
         return ResponseEntity.ok(unidadService.updateUnidad(id, request));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @PreAuthorize("hasAuthority('ADMINISTRADOR')")
     public ResponseEntity<Void> deleteUnidad(
-            @PathVariable Integer id
+            @RequestParam(name = "idUnidad") List<Integer> ids
     ) {
-        unidadService.deleteUnidad(id);
+        unidadService.deleteUnidades(ids);
         return ResponseEntity.ok().build();
     }
 

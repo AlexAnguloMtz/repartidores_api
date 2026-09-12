@@ -67,15 +67,14 @@ delete:
 
     **Permisos requeridos:** `ADMINISTRADOR`
 
-    **Códigos de error:** `UNIDAD_NO_ENCONTRADO`
-
   parameters:
-    - name: id
-      in: path
+    - name: idUnidad
+      in: query
       required: true
       schema:
-        type: integer
-        format: int64
+        type: array
+        items:
+          type: integer
 
   responses:
     '200':
