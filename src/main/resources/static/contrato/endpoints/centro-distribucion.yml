@@ -56,27 +56,3 @@ put:
         application/json:
           schema:
             $ref: '../schema/CentroDistribucionResponse.yml'
-
-
-delete:
-
-  tags:
-    - Centros de Distribucion
-
-  description: |
-
-    **Permisos requeridos:** `ADMINISTRADOR`
-
-    **Códigos de error:** `CENTRO_NO_ENCONTRADO`
-
-  parameters:
-    - name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-        format: int64
-
-  responses:
-    '200':
-      description: Eliminado correctamente

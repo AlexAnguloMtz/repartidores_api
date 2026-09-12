@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/centros-distribucion")
@@ -53,12 +55,12 @@ public class CentroDistribucionController {
         return ResponseEntity.ok(centroDistribucionService.updateCentroDistribucion(id, request));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @PreAuthorize("hasAuthority('ADMINISTRADOR')")
     public ResponseEntity<Void> deleteCentroDistribucion(
-            @PathVariable Integer id
+            @RequestParam(name = "idCentro") List<Integer> ids
     ) {
-        centroDistribucionService.deleteCentroDistribucion(id);
+        centroDistribucionService.deleteCentrosDistribucion(ids);
         return ResponseEntity.ok().build();
     }
 

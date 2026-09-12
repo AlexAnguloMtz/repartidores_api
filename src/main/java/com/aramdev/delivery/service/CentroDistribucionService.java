@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -94,13 +95,10 @@ public class CentroDistribucionService {
     }
 
     @Transactional
-    public void deleteCentroDistribucion(Integer id) {
+    public void deleteCentrosDistribucion(List<Integer> ids) {
         // TODO
-        //  verificar que no se rompe esto debido a la relacion con Unidades, y en dado caso, arreglarlo
-        CentroDistribucion centroDistribucion = centroDistribucionRepository.findById(id)
-                .orElseThrow(() -> new BusinessValidationException(CentroDistribucionErrorCodes.CENTRO_NO_ENCONTRADO));
-
-        centroDistribucionRepository.delete(centroDistribucion);
+        // Verificar que los recursos anidados permiten eliminar (o no)
+        centroDistribucionRepository.deleteAllById(ids);
     }
 
     private Sort parseSort(String sort) {

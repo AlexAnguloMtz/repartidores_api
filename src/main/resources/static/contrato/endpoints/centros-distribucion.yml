@@ -108,3 +108,25 @@ post:
         application/json:
           schema:
             $ref: '../schema/CentroDistribucionResponse.yml'
+
+delete:
+
+  tags:
+    - Centros de Distribucion
+
+  description: |
+
+    **Permisos requeridos:** `ADMINISTRADOR`
+
+  parameters:
+    - name: idCentro
+      in: query
+      required: true
+      schema:
+        type: array
+        items:
+          type: integer
+
+  responses:
+    '200':
+      description: Eliminado correctamente

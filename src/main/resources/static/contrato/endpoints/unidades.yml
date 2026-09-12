@@ -108,3 +108,25 @@ post:
         application/json:
           schema:
             $ref: '../schema/UnidadResponse.yml'
+
+delete:
+
+  tags:
+    - Unidades
+
+  description: |
+
+    **Permisos requeridos:** `ADMINISTRADOR`
+
+  parameters:
+    - name: idUnidad
+      in: query
+      required: true
+      schema:
+        type: array
+        items:
+          type: integer
+
+  responses:
+    '200':
+      description: Eliminado correctamente
