@@ -1,6 +1,6 @@
 package com.aramdev.delivery.controller;
 
-import com.aramdev.delivery.dto.GetUsersRequest;
+import com.aramdev.delivery.dto.GetUsuariosRequest;
 import com.aramdev.delivery.dto.UsuarioCreationRequest;
 import com.aramdev.delivery.dto.UsuarioResponse;
 import com.aramdev.delivery.dto.UsuarioUpdateRequest;
@@ -29,7 +29,7 @@ public class UsuarioController {
     @GetMapping
     @PreAuthorize("hasAuthority('ADMINISTRADOR')")
     public ResponseEntity<OffsetPaginationResponse<UsuarioResponse>> getUsuarios(
-            @Valid GetUsersRequest filters,
+            @Valid GetUsuariosRequest filters,
             @Valid OffsetPaginationRequest pagination
     ) {
         return ResponseEntity.ok(getUsuarios.run(filters, pagination));

@@ -5,45 +5,35 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.Instant;
-
 @Entity
-@Table(name = "usuarios")
+@Table(name = "centros_distribucion")
 @Getter
 @Setter
 @ToString(onlyExplicitlyIncluded = true)
-public class Usuario {
+public class CentroDistribucion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ToString.Include
-    private Long idUsuario;
+    private Integer idCentro;
 
     private String nombre;
-
-    @ToString.Include
-    private String email;
-
-    private String telefono;
-    private String passwordHash;
-    private Instant fechaRegistro;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_rol")
-    private Rol rol;
+    private String ciudad;
+    private String direccion;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Usuario other)) {
+        if (!(o instanceof CentroDistribucion other)) {
             return false;
         }
-        return idUsuario != null && idUsuario.equals(other.idUsuario);
+        return idCentro != null && idCentro.equals(other.idCentro);
     }
 
     @Override
     public int hashCode() {
         return getClass().hashCode();
     }
+
 
 }

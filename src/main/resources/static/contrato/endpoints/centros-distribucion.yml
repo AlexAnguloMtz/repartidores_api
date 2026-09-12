@@ -1,7 +1,7 @@
 get:
 
   tags:
-    - Usuarios
+    - Centros de Distribucion
 
   description: |
 
@@ -9,7 +9,7 @@ get:
 
   parameters:
 
-    - name: idUsuario
+    - name: idCentro
       in: query
       required: false
       schema:
@@ -25,7 +25,7 @@ get:
         items:
           type: string
 
-    - name: email
+    - name: ciudad
       in: query
       required: false
       schema:
@@ -33,7 +33,7 @@ get:
         items:
           type: string
 
-    - name: telefono
+    - name: direccion
       in: query
       required: false
       schema:
@@ -42,28 +42,6 @@ get:
         items:
           type: string
           maxLength: 10
-
-    - name: idRol
-      in: query
-      required: false
-      schema:
-        type: array
-        items:
-          type: integer
-
-    - name: fechaRegistroMin
-      in: query
-      required: false
-      schema:
-        type: string
-        format: date-time
-
-    - name: fechaRegistroMax
-      in: query
-      required: false
-      schema:
-        type: string
-        format: date-time
 
     - name: pageNumber
       in: query
@@ -83,22 +61,18 @@ get:
       schema:
         type: string
         enum:
-          - idUsuario-asc
-          - idUsuario-desc
-          - rol-asc
-          - rol-desc
+          - idCentro-asc
+          - idCentro-desc
           - nombre-asc
           - nombre-desc
-          - email-asc
-          - email-desc
-          - telefono-asc
-          - telefono-desc
-          - fechaRegistro-asc
-          - fechaRegistro-desc
+          - ciudad-asc
+          - ciudad-desc
+          - direccion-asc
+          - direccion-desc
 
   responses:
     '200':
-      description: Usuarios
+      description: Centros Distribucion
       content:
         application/json:
           schema:
@@ -111,29 +85,27 @@ get:
                   items:
                     type: array
                     items:
-                      $ref: '../schema/UsuarioResponse.yml'
+                      $ref: '../schema/CentroDistribucionResponse.yml'
 
 post:
 
   tags:
-    - Usuarios
+    - Centros de Distribucion
 
   description: |
     
     **Permisos requeridos:** `ADMINISTRADOR`
-
-    **Códigos de error:** `CORREO_DUPLICADO`, `ROL_NO_ENCONTRADO`
 
   requestBody:
     required: true
     content:
       application/json:
         schema:
-          $ref: '../schema/UsuarioCreationRequest.yml'
+          $ref: '../schema/CentroDistribucionRequest.yml'
 
   responses:
     '200':
       content:
         application/json:
           schema:
-            $ref: '../schema/UsuarioResponse.yml'
+            $ref: '../schema/CentroDistribucionResponse.yml'

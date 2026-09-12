@@ -23,10 +23,10 @@ public class Rol {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Rol rol)) {
+        if (!(o instanceof Rol other)) {
             return false;
         }
-        return idRol != null && idRol.equals(rol.idRol);
+        return idRol != null && idRol.equals(other.idRol);
     }
 
     @Override

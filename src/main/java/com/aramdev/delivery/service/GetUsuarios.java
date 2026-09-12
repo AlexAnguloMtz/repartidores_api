@@ -2,7 +2,7 @@ package com.aramdev.delivery.service;
 
 import com.aramdev.delivery.domain.GlobalErrorCodes;
 import com.aramdev.delivery.domain.Usuario;
-import com.aramdev.delivery.dto.GetUsersRequest;
+import com.aramdev.delivery.dto.GetUsuariosRequest;
 import com.aramdev.delivery.dto.UsuarioResponse;
 import com.aramdev.delivery.exception.BusinessValidationException;
 import com.aramdev.delivery.persistence.UsuarioRepository;
@@ -39,7 +39,7 @@ public class GetUsuarios {
 
     @Transactional(readOnly = true)
     public OffsetPaginationResponse<UsuarioResponse> run(
-            GetUsersRequest filters,
+            GetUsuariosRequest filters,
             OffsetPaginationRequest pagination
     ) {
         PageRequest pageRequest = PageRequest.of(

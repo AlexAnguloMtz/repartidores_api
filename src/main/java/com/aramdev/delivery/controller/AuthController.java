@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth/login")
 @RequiredArgsConstructor
+@RequestMapping("/api/auth/login")
 public class AuthController {
 
     private final Login login;

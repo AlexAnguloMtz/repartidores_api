@@ -1,0 +1,12 @@
+type: object
+required:
+  - nombre
+  - ciudad
+  - direccion
+properties:
+  nombre:
+    type: string
+  ciudad:
+    type: string
+  direccion:
+    type: string

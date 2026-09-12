@@ -1,0 +1,10 @@
+type: object
+properties:
+  idCentro:
+    type: integer
+  nombre:
+    type: string
+  ciudad:
+    type: string
+  direccion:
+    type: string

@@ -19,6 +19,8 @@ tags:
 
   - name: Usuarios
 
+  - name: Centros de Distribucion
+
 paths:
 
   /api/auth/login:
@@ -29,3 +31,9 @@ paths:
 
   /api/usuarios/{id}:
     $ref: './endpoints/usuario.yml'
+
+  /api/centros-distribucion:
+    $ref: './endpoints/centros-distribucion.yml'
+
+  /api/centros-distribucion/{id}:
+    $ref: './endpoints/centro-distribucion.yml'
