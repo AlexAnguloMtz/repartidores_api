@@ -1,21 +1,20 @@
 package com.aramdev.delivery.service;
 
-import com.aramdev.delivery.domain.GlobalErrorCodes;
 import com.aramdev.delivery.domain.Usuario;
 import com.aramdev.delivery.dto.GetUsuariosRequest;
 import com.aramdev.delivery.dto.UsuarioResponse;
-import com.aramdev.delivery.exception.BusinessValidationException;
 import com.aramdev.delivery.persistence.UsuarioRepository;
 import com.aramdev.delivery.persistence.UsuarioSpecifications;
 import com.aramdev.delivery.util.OffsetPaginationRequest;
 import com.aramdev.delivery.util.OffsetPaginationResponse;
-import com.aramdev.delivery.util.PaginationMapper;
+import com.aramdev.delivery.util.PaginationUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
@@ -35,7 +34,7 @@ public class GetUsuarios {
     private final UsuarioSpecifications usuarioSpecifications;
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
-    private final PaginationMapper paginationMapper;
+    private final PaginationUtils paginationUtils;
 
     @Transactional(readOnly = true)
     public OffsetPaginationResponse<UsuarioResponse> run(
@@ -53,32 +52,17 @@ public class GetUsuarios {
                 pageRequest
         );
 
-        return paginationMapper.toOffsetPaginationResponse(
+        return paginationUtils.toOffsetPaginationResponse(
                 page,
                 usuarioMapper::toResponse
         );
     }
     
     private Sort parseSort(String sort) {
-        if (sort == null) {
+        if (!StringUtils.hasText(sort)) {
             return Sort.by(Sort.Direction.ASC, "idUsuario");
         }
-
-        int separator = sort.lastIndexOf('-');
-
-        String property = sort.substring(0, separator);
-        String direction = sort.substring(separator + 1);
-
-        String mappedProperty = SORTS.get(property);
-
-        if (mappedProperty == null) {
-            throw new BusinessValidationException(GlobalErrorCodes.SORT_INVALIDO);
-        }
-
-        return Sort.by(
-                Sort.Direction.fromString(direction),
-                mappedProperty
-        );
+        return paginationUtils.parseSortOrThrow(sort, SORTS);
     }
 
 }

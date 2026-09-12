@@ -2,7 +2,6 @@ package com.aramdev.delivery.service;
 
 import com.aramdev.delivery.domain.CentroDistribucion;
 import com.aramdev.delivery.domain.CentroDistribucionErrorCodes;
-import com.aramdev.delivery.domain.GlobalErrorCodes;
 import com.aramdev.delivery.dto.CentroDistribucionRequest;
 import com.aramdev.delivery.dto.CentroDistribucionResponse;
 import com.aramdev.delivery.dto.GetCentrosDistribucionRequest;
@@ -11,13 +10,14 @@ import com.aramdev.delivery.persistence.CentroDistribucionRepository;
 import com.aramdev.delivery.persistence.CentroDistribucionSpecifications;
 import com.aramdev.delivery.util.OffsetPaginationRequest;
 import com.aramdev.delivery.util.OffsetPaginationResponse;
-import com.aramdev.delivery.util.PaginationMapper;
+import com.aramdev.delivery.util.PaginationUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
@@ -34,7 +34,7 @@ public class CentroDistribucionService {
 
     private final CentroDistribucionSpecifications centroDistribucionSpecifications;
     private final CentroDistribucionRepository centroDistribucionRepository;
-    private final PaginationMapper paginationMapper;
+    private final PaginationUtils paginationUtils;
 
     @Transactional(readOnly = true)
     public OffsetPaginationResponse<CentroDistribucionResponse> getCentrosDistribucion(
@@ -52,7 +52,7 @@ public class CentroDistribucionService {
                 pageRequest
         );
 
-        return paginationMapper.toOffsetPaginationResponse(
+        return paginationUtils.toOffsetPaginationResponse(
                 page,
                 this::toResponse
         );
@@ -102,25 +102,10 @@ public class CentroDistribucionService {
     }
 
     private Sort parseSort(String sort) {
-        if (sort == null) {
+        if (!StringUtils.hasText(sort)) {
             return Sort.by(Sort.Direction.ASC, "idCentro");
         }
-
-        int separator = sort.lastIndexOf('-');
-
-        String property = sort.substring(0, separator);
-        String direction = sort.substring(separator + 1);
-
-        String mappedProperty = SORTS.get(property);
-
-        if (mappedProperty == null) {
-            throw new BusinessValidationException(GlobalErrorCodes.SORT_INVALIDO);
-        }
-
-        return Sort.by(
-                Sort.Direction.fromString(direction),
-                mappedProperty
-        );
+        return paginationUtils.parseSortOrThrow(sort, SORTS);
     }
 
     private CentroDistribucionResponse toResponse(CentroDistribucion centroDistribucion) {
