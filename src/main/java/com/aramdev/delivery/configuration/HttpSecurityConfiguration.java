@@ -1,10 +1,14 @@
 package com.aramdev.delivery.configuration;
 
 import com.aramdev.delivery.controller.GlobalExceptionHandler;
+import com.aramdev.delivery.util.CustomUserDetails;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import tools.jackson.databind.json.JsonMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,10 +18,6 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -97,19 +97,46 @@ public class HttpSecurityConfiguration {
         return configuration;
     }
 
-    private JwtAuthenticationConverter jwtAuthenticationConverter() {
+    private Converter<Jwt, AbstractAuthenticationToken> jwtAuthenticationConverter() {
+
         JwtGrantedAuthoritiesConverter authoritiesConverter =
                 new JwtGrantedAuthoritiesConverter();
 
         authoritiesConverter.setAuthoritiesClaimName("permissions");
         authoritiesConverter.setAuthorityPrefix("");
 
-        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-        converter.setJwtGrantedAuthoritiesConverter(authoritiesConverter);
+        return jwt -> {
 
-        return converter;
+            List<GrantedAuthority> authorities =
+                    authoritiesConverter.convert(jwt).stream().toList();
+
+            CustomUserDetails userDetails = new CustomUserDetails(
+                    Long.valueOf(jwt.getSubject()),
+                    jwt.getClaimAsString("email"),
+                    null,
+                    authorities
+            );
+
+            AbstractAuthenticationToken authentication =
+                    new AbstractAuthenticationToken(authorities) {
+
+                        @Override
+                        public Object getCredentials() {
+                            return jwt;
+                        }
+
+                        @Override
+                        public Object getPrincipal() {
+                            return userDetails;
+                        }
+                    };
+
+            authentication.setAuthenticated(true);
+
+            return authentication;
+        };
     }
-
+    
     private AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, exception) -> {
             ProblemDetail problemDetail = globalExceptionHandler.handle(exception);

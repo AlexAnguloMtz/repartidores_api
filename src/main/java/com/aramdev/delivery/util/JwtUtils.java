@@ -20,7 +20,8 @@ public class JwtUtils {
 
     public JwtUtils(
             JwtEncoder jwtEncoder,
-            @Value("${auth.jwt.expiration-seconds}") long expirationSeconds) {
+            @Value("${auth.jwt.expiration-seconds}") long expirationSeconds
+    ) {
         this.jwtEncoder = jwtEncoder;
         this.expirationSeconds = expirationSeconds;
     }
@@ -37,6 +38,7 @@ public class JwtUtils {
                 .subject(String.valueOf(userDetails.getUserId()))
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expirationSeconds))
+                .claim("email", userDetails.getUsername())
                 .claim("permissions", permissions)
                 .build();
 

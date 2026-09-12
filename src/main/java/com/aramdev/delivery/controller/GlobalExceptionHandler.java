@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessValidationException.class)
     public ProblemDetail handle(BusinessValidationException ex) {
-        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setTitle("Validacion de negocio");
         problemDetail.setDetail("Validacion de negocio no satisfecha");
         problemDetail.setProperty("error_code", ex.getErrorCode());

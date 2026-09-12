@@ -16,10 +16,8 @@ security:
 
 tags:
   - name: Autenticación
-    description: Operaciones de autenticación
 
   - name: Usuarios
-    description: Operaciones de usuarios
 
 paths:
 

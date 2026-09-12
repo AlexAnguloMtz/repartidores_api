@@ -23,6 +23,7 @@ get:
           schema:
             $ref: '../schema/UsuarioResponse.yml'
 
+
 put:
 
   tags:
@@ -55,3 +56,27 @@ put:
         application/json:
           schema:
             $ref: '../schema/UsuarioResponse.yml'
+
+
+delete:
+
+  tags:
+    - Usuarios
+
+  description: |
+
+    **Permisos requeridos:** `ADMINISTRADOR`
+
+    **Códigos de error:** `USUARIO_NO_ENCONTRADO`, `BORRAR_CUENTA_PROPIA_NO_PERMITIDO`
+
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+  responses:
+    '200':
+      description: Eliminado correctamente
