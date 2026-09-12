@@ -1,11 +1,13 @@
 type: object
+required:
+  - idRol
+  - nombre
+  - email
+  - telefono
+  - password
 properties:
-  idUsuario:
-    type: integer
   idRol:
     type: integer
-  rol:
-    type: string
   nombre:
     type: string
   email:
@@ -13,6 +15,5 @@ properties:
     format: email
   telefono:
     type: string
-  fechaRegistro:
+  password:
     type: string
-    format: date-time

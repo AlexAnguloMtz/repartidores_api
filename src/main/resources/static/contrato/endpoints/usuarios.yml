@@ -14,7 +14,7 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../schema/UsuarioRequest.yml'
+          $ref: '../schema/UsuarioCreationRequest.yml'
 
   responses:
     '200':

@@ -1,0 +1,33 @@
+put:
+
+  tags:
+    - Usuarios
+
+  description: |
+
+    **Permisos requeridos:** `ADMINISTRADOR`
+
+    **Códigos de error:** `CORREO_DUPLICADO`, `ROL_NO_ENCONTRADO`, `USUARIO_NO_ENCONTRADO`
+
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schema/UsuarioUpdateRequest.yml'
+
+  responses:
+    '200':
+      description: Usuario actualizado correctamente
+      content:
+        application/json:
+          schema:
+            $ref: '../schema/UsuarioResponse.yml'

@@ -1,6 +1,6 @@
 package com.aramdev.delivery.service;
 
-import com.aramdev.delivery.dto.UsuarioRequest;
+import com.aramdev.delivery.dto.UsuarioCreationRequest;
 import com.aramdev.delivery.dto.UsuarioResponse;
 import com.aramdev.delivery.domain.Rol;
 import com.aramdev.delivery.domain.Usuario;
@@ -38,7 +38,7 @@ public class CreateUsuario {
     }
 
     @Transactional
-    public UsuarioResponse run(UsuarioRequest request) {
+    public UsuarioResponse run(UsuarioCreationRequest request) {
         if (usuarioRepository.existsByEmailIgnoreCase(request.email())) {
             throw new BusinessValidationException(UsuarioErrorCodes.CORREO_DUPLICADO);
         }
@@ -50,7 +50,7 @@ public class CreateUsuario {
         usuario.setTelefono(request.telefono());
         usuario.setPasswordHash(passwordEncoder.encode(request.password()));
         usuario.setFechaRegistro(Instant.now());
-        usuario.setRol(findRoleByIdOrThrow(request.roleId()));
+        usuario.setRol(findRoleByIdOrThrow(request.idRol()));
 
         Usuario saved = usuarioRepository.save(usuario);
 
@@ -64,6 +64,7 @@ public class CreateUsuario {
 
     private UsuarioResponse toResponse(Usuario usuario) {
         return new UsuarioResponse(
+                usuario.getIdUsuario(),
                 usuario.getRol().getIdRol(),
                 usuario.getRol().getNombre(),
                 usuario.getNombre(),
