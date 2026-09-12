@@ -2,6 +2,6 @@ package com.aramdev.delivery.domain;
 
 public enum UnidadErrorCodes {
 
-    UNIDAD_NO_ENCONTRADO
+    PLACAS_DUPLICADAS, UNIDAD_NO_ENCONTRADO
 
 }

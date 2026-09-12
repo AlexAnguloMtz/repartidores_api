@@ -93,7 +93,7 @@ post:
     
     **Permisos requeridos:** `ADMINISTRADOR`
     
-    **Códigos de error:** `CENTRO_NO_ENCONTRADO`
+    **Códigos de error:** `CENTRO_NO_ENCONTRADO`, `PLACAS_DUPLICADAS`
 
   requestBody:
     required: true

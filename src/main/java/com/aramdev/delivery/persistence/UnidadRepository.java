@@ -21,4 +21,8 @@ public interface UnidadRepository extends
     )
     Set<Integer> findAllIdsWithRelations(Set<Integer> ids);
 
+    boolean existsByPlacasIgnoreCase(String placas);
+
+    boolean existsByPlacasIgnoreCaseAndIdUnidadNot(String placas, Integer id);
+
 }

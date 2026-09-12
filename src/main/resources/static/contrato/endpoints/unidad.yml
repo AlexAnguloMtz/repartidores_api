@@ -7,7 +7,7 @@ get:
 
     **Permisos requeridos:** `ADMINISTRADOR`
 
-    **Códigos de error:** `UNIDAD_NO_ENCONTRADO`
+    **Códigos de error:** `UNIDAD_NO_ENCONTRADO` 
 
   parameters:
     - name: id
@@ -33,7 +33,7 @@ put:
 
     **Permisos requeridos:** `ADMINISTRADOR`
 
-    **Códigos de error:** `UNIDAD_NO_ENCONTRADO`, `CENTRO_NO_ENCONTRADO`
+    **Códigos de error:** `UNIDAD_NO_ENCONTRADO`, `CENTRO_NO_ENCONTRADO`, `PLACAS_DUPLICADAS`
 
   parameters:
     - name: id

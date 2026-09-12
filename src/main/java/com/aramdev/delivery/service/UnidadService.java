@@ -80,6 +80,13 @@ public class UnidadService {
             UnidadRequest request
     ) {
         Unidad unidad = new Unidad();
+
+        if (unidadRepository.existsByPlacasIgnoreCase(request.placas())) {
+            throw new BusinessValidationException(
+                    UnidadErrorCodes.PLACAS_DUPLICADAS
+            );
+        }
+
         unidad.setPlacas(request.placas().toUpperCase(Locale.ROOT));
         unidad.setCodigoUnidad(makeCodigoUnidad());
         unidad.setCentroDistribucion(findCentroDistribucionByIdOrThrow(request.idCentro()));
@@ -94,6 +101,12 @@ public class UnidadService {
     ) {
         Unidad unidad = unidadRepository.findById(id)
                 .orElseThrow(() -> new BusinessValidationException(UnidadErrorCodes.UNIDAD_NO_ENCONTRADO));
+
+        if (unidadRepository.existsByPlacasIgnoreCaseAndIdUnidadNot(request.placas(), id)) {
+            throw new BusinessValidationException(
+                    UnidadErrorCodes.PLACAS_DUPLICADAS
+            );
+        }
 
         unidad.setPlacas(request.placas().toUpperCase());
         unidad.setCentroDistribucion(findCentroDistribucionByIdOrThrow(request.idCentro()));
