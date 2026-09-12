@@ -18,6 +18,8 @@ public class DeleteUsuario {
 
     @Transactional
     public void run(List<Long> ids, CustomUserDetails currentUser) {
+        // TODO
+        // Arreglar el error de integridad referencial
         ids.forEach((anId) -> {
             if (currentUser.getUserId().equals(anId)) {
                 throw new BusinessValidationException(
