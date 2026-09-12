@@ -1,6 +1,6 @@
 package com.aramdev.delivery.persistence;
 
-import com.aramdev.delivery.entity.Rol;
+import com.aramdev.delivery.domain.Rol;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

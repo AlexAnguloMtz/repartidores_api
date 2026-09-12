@@ -2,12 +2,13 @@ package com.aramdev.delivery.service;
 
 import com.aramdev.delivery.dto.LoginRequest;
 import com.aramdev.delivery.dto.LoginResponse;
-import com.aramdev.delivery.entity.Usuario;
+import com.aramdev.delivery.domain.Usuario;
 import com.aramdev.delivery.persistence.UsuarioRepository;
 import com.aramdev.delivery.util.CustomUserDetails;
 import com.aramdev.delivery.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +36,7 @@ public class Login {
                 usuario.getIdUsuario(),
                 usuario.getEmail(),
                 null,
-                List.of()
+                List.of(new SimpleGrantedAuthority(usuario.getRol().getNombre()))
         );
 
         String accessToken = jwtUtils.createJwt(userDetails);

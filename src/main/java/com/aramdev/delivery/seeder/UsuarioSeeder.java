@@ -1,7 +1,7 @@
 package com.aramdev.delivery.seeder;
 
-import com.aramdev.delivery.entity.Rol;
-import com.aramdev.delivery.entity.Usuario;
+import com.aramdev.delivery.domain.Rol;
+import com.aramdev.delivery.domain.Usuario;
 import com.aramdev.delivery.persistence.RolRepository;
 import com.aramdev.delivery.persistence.UsuarioRepository;
 import lombok.RequiredArgsConstructor;

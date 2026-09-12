@@ -1,0 +1,25 @@
+post:
+
+  tags:
+    - Usuarios
+
+  description: |
+    
+    **Permisos requeridos:** `ADMINISTRADOR`
+
+    **Códigos de error:** `CORREO_DUPLICADO`, `ROL_NO_ENCONTRADO`
+
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schema/UsuarioRequest.yml'
+
+  responses:
+    '200':
+      description: Usuario creado correctamente
+      content:
+        application/json:
+          schema:
+            $ref: '../schema/UsuarioResponse.yml'

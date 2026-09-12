@@ -1,0 +1,17 @@
+type: object
+properties:
+  roleId:
+    type: integer
+    format: int32
+  role:
+    type: string
+  nombre:
+    type: string
+  email:
+    type: string
+    format: email
+  telefono:
+    type: string
+  creado:
+    type: string
+    format: date-time

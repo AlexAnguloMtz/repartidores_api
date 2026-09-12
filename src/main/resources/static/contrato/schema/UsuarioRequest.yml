@@ -1,0 +1,28 @@
+type: object
+required:
+  - roleId
+  - nombre
+  - email
+  - telefono
+  - password
+properties:
+  roleId:
+    type: integer
+    format: int32
+    description: ID del rol del usuario
+  nombre:
+    type: string
+    maxLength: 100
+  email:
+    type: string
+    format: email
+    maxLength: 100
+  telefono:
+    type: string
+    description: Número telefónico de 10 dígitos
+  password:
+    type: string
+    format: password
+    description: >
+      Contraseña de 8 a 100 caracteres. Debe contener al menos una mayúscula,
+      una minúscula, un número y uno de estos caracteres especiales: ! @ # $ % & * ?

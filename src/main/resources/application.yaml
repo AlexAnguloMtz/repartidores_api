@@ -21,6 +21,9 @@ springdoc:
   swagger-ui:
     url: /contrato/openapi.yml
 
+globals:
+  timezone: America/Hermosillo
+
 auth:
   jwt:
     secret: anjsknfau82h3hf29hf98ej8sfj9ja89nfja9jfdn928nf902i9knfjiaosfds

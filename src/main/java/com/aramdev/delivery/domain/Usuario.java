@@ -1,4 +1,4 @@
-package com.aramdev.delivery.entity;
+package com.aramdev.delivery.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;

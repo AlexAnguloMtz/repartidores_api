@@ -20,3 +20,6 @@
   paths:
     /api/auth/login:
       $ref: './endpoints/login.yml'
+
+    /api/usuarios:
+      $ref: './endpoints/usuarios.yml'

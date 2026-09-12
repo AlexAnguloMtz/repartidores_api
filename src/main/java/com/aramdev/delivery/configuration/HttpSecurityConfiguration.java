@@ -3,6 +3,9 @@ package com.aramdev.delivery.configuration;
 import com.aramdev.delivery.controller.GlobalExceptionHandler;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import tools.jackson.databind.json.JsonMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +28,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Configuration
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class HttpSecurityConfiguration {
 
@@ -54,7 +58,9 @@ public class HttpSecurityConfiguration {
 
         http.oauth2ResourceServer(oauth2 ->
                oauth2.authenticationEntryPoint(authenticationEntryPoint())
-                .jwt(jwt -> {}
+                .jwt(jwt -> {
+                    jwt.jwtAuthenticationConverter(jwtAuthenticationConverter());
+                }
         ));
 
         return http.build();
@@ -89,6 +95,19 @@ public class HttpSecurityConfiguration {
         configuration.setExposedHeaders(List.of("*"));
 
         return configuration;
+    }
+
+    private JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtGrantedAuthoritiesConverter authoritiesConverter =
+                new JwtGrantedAuthoritiesConverter();
+
+        authoritiesConverter.setAuthoritiesClaimName("permissions");
+        authoritiesConverter.setAuthorityPrefix("");
+
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(authoritiesConverter);
+
+        return converter;
     }
 
     private AuthenticationEntryPoint authenticationEntryPoint() {
