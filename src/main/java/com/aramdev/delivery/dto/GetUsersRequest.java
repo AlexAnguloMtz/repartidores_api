@@ -14,7 +14,7 @@ public record GetUsersRequest(
         List<@Size(max = 100) String> email,
 
         @Size(max = 20)
-        List<@Size(max = 10) String> telefono,
+        List<@Size(max = 50) String> telefono,
 
         @Size(max = 20)
         List<Integer> idRol,
