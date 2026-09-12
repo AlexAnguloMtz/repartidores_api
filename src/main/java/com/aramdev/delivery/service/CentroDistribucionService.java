@@ -72,6 +72,12 @@ public class CentroDistribucionService {
     public CentroDistribucionResponse createCentroDistribucion(
             CentroDistribucionRequest request
     ) {
+        if (centroDistribucionRepository.existsByNombreIgnoreCase(request.nombre())) {
+            throw new BusinessValidationException(
+                    CentroDistribucionErrorCodes.NOMBRE_CENTRO_DUPLICADO
+            );
+        }
+
         CentroDistribucion centroDistribucion = new CentroDistribucion();
         centroDistribucion.setNombre(request.nombre());
         centroDistribucion.setCiudad(request.ciudad());
@@ -86,7 +92,18 @@ public class CentroDistribucionService {
             CentroDistribucionRequest request
     ) {
         CentroDistribucion centroDistribucion = centroDistribucionRepository.findById(id)
-                .orElseThrow(() -> new BusinessValidationException(CentroDistribucionErrorCodes.CENTRO_NO_ENCONTRADO));
+                .orElseThrow(() -> new BusinessValidationException(
+                        CentroDistribucionErrorCodes.CENTRO_NO_ENCONTRADO
+                ));
+
+        if (centroDistribucionRepository.existsByNombreIgnoreCaseAndIdCentroNot(
+                request.nombre(),
+                id
+        )) {
+            throw new BusinessValidationException(
+                    CentroDistribucionErrorCodes.NOMBRE_CENTRO_DUPLICADO
+            );
+        }
 
         centroDistribucion.setNombre(request.nombre());
         centroDistribucion.setCiudad(request.ciudad());

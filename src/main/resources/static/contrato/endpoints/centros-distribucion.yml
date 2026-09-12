@@ -94,6 +94,8 @@ post:
   description: |
     
     **Permisos requeridos:** `ADMINISTRADOR`
+    
+    **Códigos de error:** `NOMBRE_CENTRO_DUPLICADO`
 
   requestBody:
     required: true

@@ -33,7 +33,7 @@ put:
 
     **Permisos requeridos:** `ADMINISTRADOR`
 
-    **Códigos de error:** `CENTRO_NO_ENCONTRADO`
+    **Códigos de error:** `CENTRO_NO_ENCONTRADO`, `NOMBRE_CENTRO_DUPLICADO`
 
   parameters:
     - name: id

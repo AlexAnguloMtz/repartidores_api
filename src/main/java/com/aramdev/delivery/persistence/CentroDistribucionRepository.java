@@ -19,4 +19,8 @@ public interface CentroDistribucionRepository extends
         """, nativeQuery = true)
     Set<Integer> findAllIdsWithRelations(Set<Integer> ids);
 
+    boolean existsByNombreIgnoreCase(String nombre);
+
+    boolean existsByNombreIgnoreCaseAndIdCentroNot(String nombre, Integer idCentro);
+
 }
