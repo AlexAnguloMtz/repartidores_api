@@ -23,11 +23,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class UsuarioController {
 
-    private final GetUsuarios getUsuarios;
-    private final GetUsuario getUsuario;
-    private final CreateUsuario createUsuario;
-    private final UpdateUsuario updateUsuario;
-    private final DeleteUsuarios deleteUsuarios;
+    private final UsuarioService usuarioService;
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMINISTRADOR')")
@@ -35,7 +31,7 @@ public class UsuarioController {
             @Valid GetUsuariosRequest filters,
             @Valid OffsetPaginationRequest pagination
     ) {
-        return ResponseEntity.ok(getUsuarios.run(filters, pagination));
+        return ResponseEntity.ok(usuarioService.getUsuarios(filters, pagination));
     }
 
     @PostMapping
@@ -43,7 +39,7 @@ public class UsuarioController {
     public ResponseEntity<UsuarioResponse> createUsuario(
             @Valid @RequestBody UsuarioCreationRequest request
     ) {
-        return ResponseEntity.ok(createUsuario.run(request));
+        return ResponseEntity.ok(usuarioService.createUsuario(request));
     }
 
     @GetMapping("/{id}")
@@ -51,7 +47,7 @@ public class UsuarioController {
     public ResponseEntity<UsuarioResponse> getUsuario(
             @PathVariable Long id
     ) {
-        return ResponseEntity.ok(getUsuario.run(id));
+        return ResponseEntity.ok(usuarioService.getUsuario(id));
     }
 
     @PutMapping("/{id}")
@@ -60,7 +56,7 @@ public class UsuarioController {
             @PathVariable Long id,
             @Valid @RequestBody UsuarioUpdateRequest request
     ) {
-        return ResponseEntity.ok(updateUsuario.run(id, request));
+        return ResponseEntity.ok(usuarioService.updateUsuario(id, request));
     }
 
     @DeleteMapping
@@ -69,7 +65,7 @@ public class UsuarioController {
             @RequestParam(name = "idUsuario") Set<Long> ids,
             @AuthenticationPrincipal CustomUserDetails currentUser
     ) {
-        return ResponseEntity.ok(deleteUsuarios.run(ids, currentUser));
+        return ResponseEntity.ok(usuarioService.deleteUsuarios(ids, currentUser));
     }
 
 }
