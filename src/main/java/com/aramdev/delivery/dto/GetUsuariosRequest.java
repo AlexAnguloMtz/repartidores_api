@@ -19,8 +19,11 @@ public record GetUsuariosRequest(
         @Size(max = 20)
         List<@Size(max = 50) String> telefono,
 
-        @Size(max = 20)
+        @Size(max = 5)
         List<Integer> idRol,
+
+        @Size(max = 5)
+        List<@Size(max = 30) String> nombreRol,
 
         LocalDateTime fechaRegistroMin,
 

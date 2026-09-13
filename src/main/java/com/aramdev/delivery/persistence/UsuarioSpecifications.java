@@ -91,6 +91,22 @@ public class UsuarioSpecifications {
                 );
             }
 
+            if (request.nombreRol() != null && !request.nombreRol().isEmpty()) {
+                var nombreRolPredicates = cb.disjunction();
+
+                for (String nombreRol : request.nombreRol()) {
+                    nombreRolPredicates = cb.or(
+                            nombreRolPredicates,
+                            cb.like(
+                                    cb.lower(root.get("rol").get("nombre")),
+                                    "%" + nombreRol.toLowerCase(Locale.ROOT) + "%"
+                            )
+                    );
+                }
+
+                predicates = cb.and(predicates, nombreRolPredicates);
+            }
+
             if (request.fechaRegistroMin() != null) {
                 predicates = cb.and(
                         predicates,

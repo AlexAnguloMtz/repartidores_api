@@ -51,6 +51,14 @@ get:
         items:
           type: integer
 
+    - name: nombreRol
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+
     - name: fechaRegistroMin
       in: query
       required: false
