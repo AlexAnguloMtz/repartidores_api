@@ -4,7 +4,7 @@ import com.aramdev.delivery.dto.LoginRequest;
 import com.aramdev.delivery.dto.LoginResponse;
 import com.aramdev.delivery.dto.RoleResponse;
 import com.aramdev.delivery.persistence.RolRepository;
-import com.aramdev.delivery.service.Login;
+import com.aramdev.delivery.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final Login login;
+    private final AuthService authService;
     private final RolRepository rolRepository;
 
     @GetMapping("/roles")
@@ -31,7 +31,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
-        return ResponseEntity.ok(login.run(request));
+        return ResponseEntity.ok(authService.login(request));
     }
 
 }

@@ -17,14 +17,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class Login {
+public class AuthService {
 
     private final JwtUtils jwtUtils;
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
-    public LoginResponse run(LoginRequest request) {
+    public LoginResponse login(LoginRequest request) {
         Usuario usuario = usuarioRepository.findByEmailIgnoreCase(request.email())
                 .orElseThrow(() -> new BadCredentialsException("Invalid credentials"));
 
