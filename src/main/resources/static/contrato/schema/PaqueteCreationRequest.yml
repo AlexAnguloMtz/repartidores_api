@@ -1,0 +1,50 @@
+type: object
+properties:
+  idCliente:
+    type: integer
+    format: int64
+  idCentroOrigen:
+    type: integer
+    format: int32
+  direccionOrigen:
+    type: string
+    maxLength: 255
+  direccionDestino:
+    type: string
+    maxLength: 255
+  latitudDestino:
+    type: number
+    format: double
+    minimum: -90
+    maximum: 90
+  longitudDestino:
+    type: number
+    format: double
+    minimum: -180
+    maximum: 180
+  pesoKg:
+    type: number
+    format: double
+    minimum: 0.01
+    maximum: 9999.99
+  tamanoEtiqueta:
+    type: string
+    enum:
+      - CHICO
+      - MEDIANO
+      - GRANDE
+  esPrioritario:
+    type: boolean
+  esFragil:
+    type: boolean
+required:
+  - idCliente
+  - idCentroOrigen
+  - direccionOrigen
+  - direccionDestino
+  - latitudDestino
+  - longitudDestino
+  - pesoKg
+  - tamanoEtiqueta
+  - esPrioritario
+  - esFragil

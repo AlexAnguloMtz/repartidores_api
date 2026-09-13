@@ -1,0 +1,25 @@
+get:
+
+  tags:
+    - Autenticación
+
+  description: |
+
+    **Permisos requeridos:** `ADMINISTRADOR`
+
+  responses:
+    '200':
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                idRol:
+                  type: integer
+                nombre:
+                  type: string
+              required:
+                - idRol
+                - nombre

@@ -19,6 +19,8 @@ tags:
 
   - name: Usuarios
 
+  - name: Paquetes
+
   - name: Centros de Distribucion
 
   - name: Unidades
@@ -28,11 +30,17 @@ paths:
   /api/auth/login:
     $ref: './endpoints/login.yml'
 
+  /api/auth/roles:
+    $ref: './endpoints/roles.yml'
+
   /api/usuarios:
     $ref: './endpoints/usuarios.yml'
 
   /api/usuarios/{id}:
     $ref: './endpoints/usuario.yml'
+
+  /api/paquetes:
+    $ref: './endpoints/paquetes.yml'
 
   /api/centros-distribucion:
     $ref: './endpoints/centros-distribucion.yml'

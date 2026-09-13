@@ -1,0 +1,24 @@
+post:
+
+  tags:
+    - Paquetes
+
+  description: |
+    
+    **Permisos requeridos:** `ADMINISTRADOR`
+    
+    **Códigos de error:** `CENTRO_NO_ENCONTRADO`, `CLIENTE_NO_ENCONTRADO`, `USUARIO_NO_ES_UN_CLIENTE` 
+
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schema/PaqueteCreationRequest.yml'
+
+  responses:
+    '200':
+      content:
+        application/json:
+          schema:
+            $ref: '../schema/PaqueteResponse.yml'
