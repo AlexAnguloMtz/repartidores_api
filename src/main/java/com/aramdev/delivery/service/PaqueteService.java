@@ -1,10 +1,12 @@
 package com.aramdev.delivery.service;
 
 import com.aramdev.delivery.domain.*;
+import com.aramdev.delivery.dto.HistorialSeguimientoResponse;
 import com.aramdev.delivery.dto.PaqueteCreationRequest;
 import com.aramdev.delivery.dto.PaqueteResponse;
 import com.aramdev.delivery.exception.BusinessValidationException;
 import com.aramdev.delivery.persistence.CentroDistribucionRepository;
+import com.aramdev.delivery.persistence.HistorialSeguimientoRepository;
 import com.aramdev.delivery.persistence.PaqueteRepository;
 import com.aramdev.delivery.persistence.UsuarioRepository;
 import org.postgresql.geometric.PGpoint;
@@ -16,6 +18,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.Year;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -24,17 +27,20 @@ public class PaqueteService {
     private final UsuarioRepository usuarioRepository;
     private final CentroDistribucionRepository centroDistribucionRepository;
     private final PaqueteRepository paqueteRepository;
+    private final HistorialSeguimientoRepository historialSeguimientoRepository;
     private final ZoneId timezone;
 
     public PaqueteService(
             UsuarioRepository usuarioRepository,
             CentroDistribucionRepository centroDistribucionRepository,
             PaqueteRepository paqueteRepository,
+            HistorialSeguimientoRepository historialSeguimientoRepository,
             @Value("${globals.timezone}") String timezone
     ) {
         this.usuarioRepository = usuarioRepository;
         this.centroDistribucionRepository = centroDistribucionRepository;
         this.paqueteRepository = paqueteRepository;
+        this.historialSeguimientoRepository = historialSeguimientoRepository;
         this.timezone = ZoneId.of(timezone);
     }
 
@@ -82,7 +88,14 @@ public class PaqueteService {
 
         paqueteRepository.save(paquete);
 
-        return toResponse(paquete);
+        HistorialSeguimiento historial = new HistorialSeguimiento();
+        historial.setTitulo(EventoPaquete.RECIBIDO.name());
+        historial.setDescripcion("Paquete recibido");
+        historial.setFechaHora(Instant.now());
+
+        HistorialSeguimiento savedHistorial = historialSeguimientoRepository.save(historial);
+
+        return toResponse(paquete, List.of(savedHistorial));
     }
 
     private String makeFolio() {
@@ -97,8 +110,7 @@ public class PaqueteService {
         return "PK-" + year + "-" + random + "-" + random2;
     }
 
-    private PaqueteResponse toResponse(Paquete paquete) {
-
+    private PaqueteResponse toResponse(Paquete paquete, List<HistorialSeguimiento> historial) {
         PGpoint point = paquete.getCoordenadasDestino();
 
         return new PaqueteResponse(
@@ -115,9 +127,17 @@ public class PaqueteService {
                 paquete.getEsPrioritario(),
                 paquete.getEsFragil(),
                 paquete.getEstadoActual(),
-                paquete.getFechaCreacion()
-                        .atZone(timezone)
-                        .toLocalDateTime()
+                paquete.getFechaCreacion().atZone(timezone).toLocalDateTime(),
+                historial.stream().map(this::toResponse).toList()
+        );
+    }
+
+    private HistorialSeguimientoResponse toResponse(HistorialSeguimiento historial) {
+        return new HistorialSeguimientoResponse(
+                historial.getIdHistorial(),
+                historial.getTitulo(),
+                historial.getDescripcion(),
+                historial.getFechaHora().atZone(timezone).toLocalDateTime()
         );
     }
 }

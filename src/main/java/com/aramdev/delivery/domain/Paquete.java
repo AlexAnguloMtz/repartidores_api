@@ -11,7 +11,6 @@ import java.time.Instant;
 
 import org.hibernate.annotations.Type;
 import org.postgresql.geometric.PGpoint;
-import org.springframework.data.geo.Point;
 
 @Entity
 @Table(name = "paquetes")
@@ -28,12 +27,13 @@ public class Paquete {
     private String folio;
     private String direccionOrigen;
     private String direccionDestino;
-    @Type(PGPointType.class)
-    private PGpoint coordenadasDestino;
     private BigDecimal pesoKg;
     private Boolean esPrioritario;
     private Boolean esFragil;
     private Instant fechaCreacion;
+
+    @Type(PGPointType.class)
+    private PGpoint coordenadasDestino;
 
     @Enumerated(EnumType.STRING)
     private TamanoEtiqueta tamanoEtiqueta;

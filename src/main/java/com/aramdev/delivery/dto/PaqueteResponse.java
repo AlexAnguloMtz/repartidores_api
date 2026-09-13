@@ -20,6 +20,7 @@ public record PaqueteResponse(
         Boolean esPrioritario,
         Boolean esFragil,
         EstadoPaquete estadoActual,
-        LocalDateTime fechaCreacion
+        LocalDateTime fechaCreacion,
+        Iterable<HistorialSeguimientoResponse> historial
 ) {
 }

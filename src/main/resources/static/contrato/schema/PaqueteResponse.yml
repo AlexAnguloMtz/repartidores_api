@@ -58,6 +58,11 @@ properties:
     type: string
     format: date-time
 
+  historial:
+    type: array
+    items:
+      $ref: './HistorialSeguimientoResponse.yml'
+
 required:
   - idPaquete
   - folio
@@ -73,3 +78,4 @@ required:
   - esFragil
   - estadoActual
   - fechaCreacion
+  - historial
