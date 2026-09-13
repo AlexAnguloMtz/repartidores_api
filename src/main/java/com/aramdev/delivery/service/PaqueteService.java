@@ -93,6 +93,7 @@ public class PaqueteService {
         HistorialSeguimiento historial = new HistorialSeguimiento();
         historial.setTitulo(EventoPaquete.RECIBIDO.name());
         historial.setDescripcion("Paquete recibido");
+        historial.setPaquete(paquete);
         historial.setFechaHora(now);
 
         HistorialSeguimiento savedHistorial = historialSeguimientoRepository.save(historial);

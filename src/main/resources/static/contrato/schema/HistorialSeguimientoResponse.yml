@@ -16,8 +16,3 @@ properties:
   fechaHora:
     type: string
     format: date-time
-  required:
-  - id
-  - titulo
-  - descripcion
-  - fechaHora
