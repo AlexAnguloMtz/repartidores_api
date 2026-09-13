@@ -46,6 +46,8 @@ public class PaqueteService {
 
     @Transactional
     public PaqueteResponse createPaquete(PaqueteCreationRequest request) {
+        Instant now = Instant.now();
+
         Usuario cliente = usuarioRepository.findById(request.idCliente())
                 .orElseThrow(() -> new BusinessValidationException(
                         ClienteErrorCodes.CLIENTE_NO_ENCONTRADO
@@ -81,7 +83,7 @@ public class PaqueteService {
         paquete.setEsFragil(request.esFragil());
 
         paquete.setEstadoActual(EstadoPaquete.RECIBIDO);
-        paquete.setFechaCreacion(Instant.now());
+        paquete.setFechaCreacion(now);
 
         paquete.setCliente(cliente);
         paquete.setCentroOrigen(centroOrigen);
@@ -91,7 +93,7 @@ public class PaqueteService {
         HistorialSeguimiento historial = new HistorialSeguimiento();
         historial.setTitulo(EventoPaquete.RECIBIDO.name());
         historial.setDescripcion("Paquete recibido");
-        historial.setFechaHora(Instant.now());
+        historial.setFechaHora(now);
 
         HistorialSeguimiento savedHistorial = historialSeguimientoRepository.save(historial);
 
