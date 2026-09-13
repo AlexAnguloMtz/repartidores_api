@@ -56,7 +56,7 @@ public class UnidadSeeder {
             CentroDistribucion centro = centros.get(i % centros.size());
 
             unidades.add(make(
-                    unidadService.makeCodigoUnidad(),
+                    "Unidad 0" + i + 1,
                     makePlacas(),
                     centro
             ));

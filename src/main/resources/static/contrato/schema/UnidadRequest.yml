@@ -5,5 +5,7 @@ required:
 properties:
   idCentro:
     type: integer
+  codigoUnidad:
+    type: string
   placas:
     type: string

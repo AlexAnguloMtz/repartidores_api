@@ -1,6 +1,8 @@
 package com.aramdev.delivery.domain;
 
 public enum EstadoPaquete {
-    RECIBIDO
-
+    RECIBIDO,
+    EN_RUTA,
+    EN_REPARTO,
+    ENTREGADO
 }

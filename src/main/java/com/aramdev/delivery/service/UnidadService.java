@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @RequiredArgsConstructor
@@ -87,8 +86,14 @@ public class UnidadService {
             );
         }
 
+        if (unidadRepository.existsByCodigoUnidadIgnoreCase(request.codigoUnidad())) {
+            throw new BusinessValidationException(
+                    UnidadErrorCodes.CODIGO_UNIDAD_DUPLICADO
+            );
+        }
+
         unidad.setPlacas(request.placas().toUpperCase(Locale.ROOT));
-        unidad.setCodigoUnidad(makeCodigoUnidad());
+        unidad.setCodigoUnidad(request.codigoUnidad());
         unidad.setCentroDistribucion(findCentroDistribucionByIdOrThrow(request.idCentro()));
 
         return toResponse(unidadRepository.save(unidad));
@@ -108,7 +113,14 @@ public class UnidadService {
             );
         }
 
-        unidad.setPlacas(request.placas().toUpperCase());
+        if (unidadRepository.existsByCodigoUnidadIgnoreCaseAndIdUnidadNot(request.codigoUnidad(), id)) {
+            throw new BusinessValidationException(
+                    UnidadErrorCodes.CODIGO_UNIDAD_DUPLICADO
+            );
+        }
+
+        unidad.setPlacas(request.placas().toUpperCase(Locale.ROOT));
+        unidad.setCodigoUnidad(request.codigoUnidad());
         unidad.setCentroDistribucion(findCentroDistribucionByIdOrThrow(request.idCentro()));
 
         return toResponse(unidadRepository.save(unidad));
@@ -147,24 +159,6 @@ public class UnidadService {
     private CentroDistribucion findCentroDistribucionByIdOrThrow(Integer id) {
         return centroDistribucionRepository.findById(id)
                 .orElseThrow(() -> new BusinessValidationException(CentroDistribucionErrorCodes.CENTRO_NO_ENCONTRADO));
-    }
-
-    public String makeCodigoUnidad() {
-        StringBuilder codigo = new StringBuilder(20);
-
-        for (int i = 0; i < 16; i++) {
-            if (i > 0 && i % 4 == 0) {
-                codigo.append('-');
-            }
-
-            codigo.append(
-                    CODIGO_CHARS.charAt(
-                            ThreadLocalRandom.current().nextInt(CODIGO_CHARS.length())
-                    )
-            );
-        }
-
-        return codigo.toString();
     }
 
 }
