@@ -81,7 +81,7 @@ public class GlobalExceptionHandler {
         if (ex.getCause() instanceof InvalidFormatException cause
                 && !cause.getPath().isEmpty()) {
             String field = cause.getPath().getLast().getPropertyName();
-            String error = "Tipo de dato incorrecto.";
+            String error = "Formato incorrecto.";
             errors.add(new ProblemDetailError(field, error));
         }
 
