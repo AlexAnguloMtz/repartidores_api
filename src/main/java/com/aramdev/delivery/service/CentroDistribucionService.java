@@ -4,21 +4,17 @@ import com.aramdev.delivery.domain.CentroDistribucion;
 import com.aramdev.delivery.domain.CentroDistribucionErrorCodes;
 import com.aramdev.delivery.dto.CentroDistribucionRequest;
 import com.aramdev.delivery.dto.CentroDistribucionResponse;
-import com.aramdev.delivery.util.DeletionSummaryResponse;
 import com.aramdev.delivery.dto.GetCentrosDistribucionRequest;
 import com.aramdev.delivery.exception.BusinessValidationException;
 import com.aramdev.delivery.persistence.CentroDistribucionRepository;
 import com.aramdev.delivery.persistence.CentroDistribucionSpecifications;
+import com.aramdev.delivery.util.DeletionSummaryResponse;
+import com.aramdev.delivery.persistence.JpaSpecificationPaginator;
 import com.aramdev.delivery.util.OffsetPaginationRequest;
 import com.aramdev.delivery.util.OffsetPaginationResponse;
-import com.aramdev.delivery.util.PaginationUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.Map;
 import java.util.Set;
@@ -36,34 +32,29 @@ public class CentroDistribucionService {
 
     private final CentroDistribucionSpecifications centroDistribucionSpecifications;
     private final CentroDistribucionRepository centroDistribucionRepository;
-    private final PaginationUtils paginationUtils;
+    private final JpaSpecificationPaginator jpaSpecificationPaginator;
 
     @Transactional(readOnly = true)
     public OffsetPaginationResponse<CentroDistribucionResponse> getCentrosDistribucion(
             GetCentrosDistribucionRequest filters,
             OffsetPaginationRequest pagination
     ) {
-        PageRequest pageRequest = PageRequest.of(
-                pagination.pageNumberOrDefault() - 1,
-                pagination.pageSizeOrDefault(),
-                parseSort(pagination.sort())
-        );
-
-        Page<CentroDistribucion> page = centroDistribucionRepository.findAll(
+        return jpaSpecificationPaginator.findPage(
+                pagination,
                 centroDistribucionSpecifications.forRequest(filters),
-                pageRequest
-        );
-
-        return paginationUtils.toOffsetPaginationResponse(
-                page,
-                this::toResponse
+                centroDistribucionRepository,
+                this::toResponse,
+                SORTS,
+                "idCentro"
         );
     }
 
     @Transactional(readOnly = true)
     public CentroDistribucionResponse getCentroDistribucionById(Integer id) {
         CentroDistribucion centroDistribucion = centroDistribucionRepository.findById(id)
-                .orElseThrow(() -> new BusinessValidationException(CentroDistribucionErrorCodes.CENTRO_NO_ENCONTRADO));
+                .orElseThrow(() -> new BusinessValidationException(
+                        CentroDistribucionErrorCodes.CENTRO_NO_ENCONTRADO
+                ));
 
         return toResponse(centroDistribucion);
     }
@@ -114,7 +105,8 @@ public class CentroDistribucionService {
 
     @Transactional
     public DeletionSummaryResponse<Integer> deleteCentrosDistribucion(Set<Integer> ids) {
-        Set<Integer> notDeletedIds = centroDistribucionRepository.findAllIdsWithRelations(ids);
+        Set<Integer> notDeletedIds =
+                centroDistribucionRepository.findAllIdsWithRelations(ids);
 
         ids.removeAll(notDeletedIds);
 
@@ -122,17 +114,15 @@ public class CentroDistribucionService {
             centroDistribucionRepository.deleteAllByIdInBatch(ids);
         }
 
-        return new DeletionSummaryResponse<>(ids, notDeletedIds);
+        return new DeletionSummaryResponse<>(
+                ids,
+                notDeletedIds
+        );
     }
 
-    private Sort parseSort(String sort) {
-        if (!StringUtils.hasText(sort)) {
-            return Sort.by(Sort.Direction.ASC, "idCentro");
-        }
-        return paginationUtils.parseSortOrThrow(sort, SORTS);
-    }
-
-    private CentroDistribucionResponse toResponse(CentroDistribucion centroDistribucion) {
+    private CentroDistribucionResponse toResponse(
+            CentroDistribucion centroDistribucion
+    ) {
         return new CentroDistribucionResponse(
                 centroDistribucion.getIdCentro(),
                 centroDistribucion.getNombre(),
@@ -140,5 +130,4 @@ public class CentroDistribucionService {
                 centroDistribucion.getDireccion()
         );
     }
-
 }

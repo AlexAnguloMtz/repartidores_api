@@ -11,11 +11,12 @@ import com.aramdev.delivery.exception.BusinessValidationException;
 import com.aramdev.delivery.persistence.RolRepository;
 import com.aramdev.delivery.persistence.UsuarioRepository;
 import com.aramdev.delivery.persistence.UsuarioSpecifications;
-import com.aramdev.delivery.util.*;
+import com.aramdev.delivery.util.CustomUserDetails;
+import com.aramdev.delivery.util.DeletionSummaryResponse;
+import com.aramdev.delivery.persistence.JpaSpecificationPaginator;
+import com.aramdev.delivery.util.OffsetPaginationRequest;
+import com.aramdev.delivery.util.OffsetPaginationResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +43,7 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final RolRepository rolRepository;
     private final UsuarioMapper usuarioMapper;
-    private final PaginationUtils paginationUtils;
+    private final JpaSpecificationPaginator jpaSpecificationPaginator;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
@@ -50,35 +51,34 @@ public class UsuarioService {
             GetUsuariosRequest filters,
             OffsetPaginationRequest pagination
     ) {
-        PageRequest pageRequest = PageRequest.of(
-                pagination.pageNumberOrDefault() - 1,
-                pagination.pageSizeOrDefault(),
-                parseSort(pagination.sort())
-        );
-
-        Page<Usuario> page = usuarioRepository.findAll(
+        return jpaSpecificationPaginator.findPage(
+                pagination,
                 usuarioSpecifications.forRequest(filters),
-                pageRequest
-        );
-
-        return paginationUtils.toOffsetPaginationResponse(
-                page,
-                usuarioMapper::toResponse
+                usuarioRepository,
+                usuarioMapper::toResponse,
+                SORTS,
+                "idUsuario"
         );
     }
 
     @Transactional(readOnly = true)
     public UsuarioResponse getUsuario(Long id) {
         Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new BusinessValidationException(UsuarioErrorCodes.USUARIO_NO_ENCONTRADO));
+                .orElseThrow(() -> new BusinessValidationException(
+                        UsuarioErrorCodes.USUARIO_NO_ENCONTRADO
+                ));
 
         return usuarioMapper.toResponse(usuario);
     }
 
     @Transactional
-    public UsuarioResponse createUsuario(UsuarioCreationRequest request) {
+    public UsuarioResponse createUsuario(
+            UsuarioCreationRequest request
+    ) {
         if (usuarioRepository.existsByEmailIgnoreCase(request.email())) {
-            throw new BusinessValidationException(UsuarioErrorCodes.CORREO_DUPLICADO);
+            throw new BusinessValidationException(
+                    UsuarioErrorCodes.CORREO_DUPLICADO
+            );
         }
 
         Usuario usuario = new Usuario();
@@ -86,7 +86,9 @@ public class UsuarioService {
         usuario.setNombre(request.nombre());
         usuario.setEmail(request.email());
         usuario.setTelefono(request.telefono());
-        usuario.setPasswordHash(passwordEncoder.encode(request.password()));
+        usuario.setPasswordHash(
+                passwordEncoder.encode(request.password())
+        );
         usuario.setFechaRegistro(Instant.now());
         usuario.setRol(findRoleByIdOrThrow(request.idRol()));
 
@@ -96,13 +98,20 @@ public class UsuarioService {
     }
 
     @Transactional
-    public UsuarioResponse updateUsuario(Long id, UsuarioUpdateRequest request) {
+    public UsuarioResponse updateUsuario(
+            Long id,
+            UsuarioUpdateRequest request
+    ) {
         Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new BusinessValidationException(UsuarioErrorCodes.USUARIO_NO_ENCONTRADO));
+                .orElseThrow(() -> new BusinessValidationException(
+                        UsuarioErrorCodes.USUARIO_NO_ENCONTRADO
+                ));
 
         if (request.idRol() != null) {
             Rol rol = rolRepository.findById(request.idRol())
-                    .orElseThrow(() -> new BusinessValidationException(UsuarioErrorCodes.ROL_NO_ENCONTRADO));
+                    .orElseThrow(() -> new BusinessValidationException(
+                            UsuarioErrorCodes.ROL_NO_ENCONTRADO
+                    ));
 
             usuario.setRol(rol);
         }
@@ -111,10 +120,13 @@ public class UsuarioService {
             usuario.setNombre(request.nombre());
         }
 
-        if (StringUtils.hasText(request.email()) && !request.email().equals(usuario.getEmail())) {
+        if (StringUtils.hasText(request.email())
+                && !request.email().equals(usuario.getEmail())) {
 
             if (usuarioRepository.existsByEmailIgnoreCase(request.email())) {
-                throw new BusinessValidationException(UsuarioErrorCodes.CORREO_DUPLICADO);
+                throw new BusinessValidationException(
+                        UsuarioErrorCodes.CORREO_DUPLICADO
+                );
             }
 
             usuario.setEmail(request.email());
@@ -125,7 +137,9 @@ public class UsuarioService {
         }
 
         if (StringUtils.hasText(request.password())) {
-            usuario.setPasswordHash(passwordEncoder.encode(request.password()));
+            usuario.setPasswordHash(
+                    passwordEncoder.encode(request.password())
+            );
         }
 
         Usuario saved = usuarioRepository.save(usuario);
@@ -134,14 +148,18 @@ public class UsuarioService {
     }
 
     @Transactional
-    public DeletionSummaryResponse<Long> deleteUsuarios(Set<Long> ids, CustomUserDetails currentUser) {
+    public DeletionSummaryResponse<Long> deleteUsuarios(
+            Set<Long> ids,
+            CustomUserDetails currentUser
+    ) {
         if (ids.contains(currentUser.getUserId())) {
             throw new BusinessValidationException(
                     UsuarioErrorCodes.BORRAR_CUENTA_PROPIA_NO_PERMITIDO
             );
         }
 
-        Set<Long> notDeletedIds = usuarioRepository.findAllIdsWithRelations(ids);
+        Set<Long> notDeletedIds =
+                usuarioRepository.findAllIdsWithRelations(ids);
 
         ids.removeAll(notDeletedIds);
 
@@ -155,16 +173,10 @@ public class UsuarioService {
         );
     }
 
-    private Sort parseSort(String sort) {
-        if (!StringUtils.hasText(sort)) {
-            return Sort.by(Sort.Direction.ASC, "idUsuario");
-        }
-        return paginationUtils.parseSortOrThrow(sort, SORTS);
-    }
-
     private Rol findRoleByIdOrThrow(Integer roleId) {
         return rolRepository.findById(roleId)
-                .orElseThrow(() -> new BusinessValidationException(UsuarioErrorCodes.ROL_NO_ENCONTRADO));
+                .orElseThrow(() -> new BusinessValidationException(
+                        UsuarioErrorCodes.ROL_NO_ENCONTRADO
+                ));
     }
-
 }

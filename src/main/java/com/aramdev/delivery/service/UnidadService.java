@@ -12,25 +12,20 @@ import com.aramdev.delivery.persistence.CentroDistribucionRepository;
 import com.aramdev.delivery.persistence.UnidadRepository;
 import com.aramdev.delivery.persistence.UnidadSpecifications;
 import com.aramdev.delivery.util.DeletionSummaryResponse;
+import com.aramdev.delivery.persistence.JpaSpecificationPaginator;
 import com.aramdev.delivery.util.OffsetPaginationRequest;
 import com.aramdev.delivery.util.OffsetPaginationResponse;
-import com.aramdev.delivery.util.PaginationUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class UnidadService {
-
-    private static final String CODIGO_CHARS =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     private static final Map<String, String> SORTS = Map.of(
             "idUnidad", "idUnidad",
@@ -42,34 +37,29 @@ public class UnidadService {
     private final UnidadSpecifications unidadSpecifications;
     private final UnidadRepository unidadRepository;
     private final CentroDistribucionRepository centroDistribucionRepository;
-    private final PaginationUtils paginationUtils;
+    private final JpaSpecificationPaginator jpaSpecificationPaginator;
 
     @Transactional(readOnly = true)
     public OffsetPaginationResponse<UnidadResponse> getUnidades(
             GetUnidadesRequest filters,
             OffsetPaginationRequest pagination
     ) {
-        PageRequest pageRequest = PageRequest.of(
-                pagination.pageNumberOrDefault() - 1,
-                pagination.pageSizeOrDefault(),
-                parseSort(pagination.sort())
-        );
-
-        Page<Unidad> page = unidadRepository.findAll(
+        return jpaSpecificationPaginator.findPage(
+                pagination,
                 unidadSpecifications.forRequest(filters),
-                pageRequest
-        );
-
-        return paginationUtils.toOffsetPaginationResponse(
-                page,
-                this::toResponse
+                unidadRepository,
+                this::toResponse,
+                SORTS,
+                "idUnidad"
         );
     }
 
     @Transactional(readOnly = true)
     public UnidadResponse getUnidadById(Integer id) {
         Unidad unidad = unidadRepository.findById(id)
-                .orElseThrow(() -> new BusinessValidationException(UnidadErrorCodes.UNIDAD_NO_ENCONTRADO));
+                .orElseThrow(() -> new BusinessValidationException(
+                        UnidadErrorCodes.UNIDAD_NO_ENCONTRADO
+                ));
 
         return toResponse(unidad);
     }
@@ -78,8 +68,6 @@ public class UnidadService {
     public UnidadResponse createUnidad(
             UnidadRequest request
     ) {
-        Unidad unidad = new Unidad();
-
         if (unidadRepository.existsByPlacasIgnoreCase(request.placas())) {
             throw new BusinessValidationException(
                     UnidadErrorCodes.PLACAS_DUPLICADAS
@@ -92,9 +80,13 @@ public class UnidadService {
             );
         }
 
+        Unidad unidad = new Unidad();
+
         unidad.setPlacas(request.placas().toUpperCase(Locale.ROOT));
         unidad.setCodigoUnidad(request.codigoUnidad());
-        unidad.setCentroDistribucion(findCentroDistribucionByIdOrThrow(request.idCentro()));
+        unidad.setCentroDistribucion(
+                findCentroDistribucionByIdOrThrow(request.idCentro())
+        );
 
         return toResponse(unidadRepository.save(unidad));
     }
@@ -105,15 +97,23 @@ public class UnidadService {
             UnidadRequest request
     ) {
         Unidad unidad = unidadRepository.findById(id)
-                .orElseThrow(() -> new BusinessValidationException(UnidadErrorCodes.UNIDAD_NO_ENCONTRADO));
+                .orElseThrow(() -> new BusinessValidationException(
+                        UnidadErrorCodes.UNIDAD_NO_ENCONTRADO
+                ));
 
-        if (unidadRepository.existsByPlacasIgnoreCaseAndIdUnidadNot(request.placas(), id)) {
+        if (unidadRepository.existsByPlacasIgnoreCaseAndIdUnidadNot(
+                request.placas(),
+                id
+        )) {
             throw new BusinessValidationException(
                     UnidadErrorCodes.PLACAS_DUPLICADAS
             );
         }
 
-        if (unidadRepository.existsByCodigoUnidadIgnoreCaseAndIdUnidadNot(request.codigoUnidad(), id)) {
+        if (unidadRepository.existsByCodigoUnidadIgnoreCaseAndIdUnidadNot(
+                request.codigoUnidad(),
+                id
+        )) {
             throw new BusinessValidationException(
                     UnidadErrorCodes.CODIGO_UNIDAD_DUPLICADO
             );
@@ -121,14 +121,17 @@ public class UnidadService {
 
         unidad.setPlacas(request.placas().toUpperCase(Locale.ROOT));
         unidad.setCodigoUnidad(request.codigoUnidad());
-        unidad.setCentroDistribucion(findCentroDistribucionByIdOrThrow(request.idCentro()));
+        unidad.setCentroDistribucion(
+                findCentroDistribucionByIdOrThrow(request.idCentro())
+        );
 
         return toResponse(unidadRepository.save(unidad));
     }
 
     @Transactional
     public DeletionSummaryResponse<Integer> deleteUnidades(Set<Integer> ids) {
-        Set<Integer> notDeletedIds = unidadRepository.findAllIdsWithRelations(ids);
+        Set<Integer> notDeletedIds =
+                unidadRepository.findAllIdsWithRelations(ids);
 
         ids.removeAll(notDeletedIds);
 
@@ -136,14 +139,10 @@ public class UnidadService {
             unidadRepository.deleteAllByIdInBatch(ids);
         }
 
-        return new DeletionSummaryResponse<>(ids, notDeletedIds);
-    }
-
-    private Sort parseSort(String sort) {
-        if (!StringUtils.hasText(sort)) {
-            return Sort.by(Sort.Direction.ASC, "idUnidad");
-        }
-        return paginationUtils.parseSortOrThrow(sort, SORTS);
+        return new DeletionSummaryResponse<>(
+                ids,
+                notDeletedIds
+        );
     }
 
     private UnidadResponse toResponse(Unidad unidad) {
@@ -158,7 +157,8 @@ public class UnidadService {
 
     private CentroDistribucion findCentroDistribucionByIdOrThrow(Integer id) {
         return centroDistribucionRepository.findById(id)
-                .orElseThrow(() -> new BusinessValidationException(CentroDistribucionErrorCodes.CENTRO_NO_ENCONTRADO));
+                .orElseThrow(() -> new BusinessValidationException(
+                        CentroDistribucionErrorCodes.CENTRO_NO_ENCONTRADO
+                ));
     }
-
 }
