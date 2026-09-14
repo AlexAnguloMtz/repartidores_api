@@ -61,8 +61,8 @@ public class PaqueteService {
     }
 
     @Transactional(readOnly = true)
-    public PaqueteFullResponse getPaquete(Long id, CustomUserDetails currentUser) {
-        Paquete paquete = paqueteRepository.findById(id)
+    public PaqueteFullResponse getPaquete(String folio, CustomUserDetails currentUser) {
+        Paquete paquete = paqueteRepository.findByFolioIgnoreCase(folio)
                 .orElseThrow(() -> new BusinessValidationException(PaqueteErrorCodes.PAQUETE_NO_ENCONTRADO));
 
         if (
@@ -72,7 +72,7 @@ public class PaqueteService {
             throw new BusinessValidationException(PaqueteErrorCodes.PAQUETE_NO_ENCONTRADO);
         }
 
-        List<HistorialSeguimiento> historial = historialSeguimientoRepository.findAllByIdPaquete(id);
+        List<HistorialSeguimiento> historial = historialSeguimientoRepository.findAllByIdPaquete(paquete.getIdPaquete());
 
         return toFullResponse(paquete, historial);
     }

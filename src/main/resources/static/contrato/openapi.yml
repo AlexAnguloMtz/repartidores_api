@@ -42,7 +42,7 @@ paths:
   /api/paquetes:
     $ref: './endpoints/paquetes.yml'
 
-  /api/paquetes/{id}:
+  /api/paquetes/{folio}:
     $ref: './endpoints/paquete.yml'
 
   /api/centros-distribucion:

@@ -24,12 +24,12 @@ public class PaqueteController {
 
     private final PaqueteService paqueteService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/{folio}")
     public ResponseEntity<PaqueteFullResponse> getPaquete(
             @AuthenticationPrincipal CustomUserDetails currentUser,
-            @PathVariable Long id
+            @PathVariable String folio
     ) {
-        return ResponseEntity.ok(paqueteService.getPaquete(id, currentUser));
+        return ResponseEntity.ok(paqueteService.getPaquete(folio, currentUser));
     }
 
     @GetMapping
@@ -41,7 +41,6 @@ public class PaqueteController {
         if (currentUser.hasAuthority("CLIENTE")) {
             filters.setIdCliente(Set.of(currentUser.getUserId()));
         }
-
         return ResponseEntity.ok(paqueteService.getPaquetes(filters, pagination));
     }
 

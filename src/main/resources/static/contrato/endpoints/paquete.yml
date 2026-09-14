@@ -14,11 +14,11 @@ get:
     **Códigos de error:** `PAQUETE_NO_ENCONTRADO`
 
   parameters:
-    - name: id
+    - name: folio
       in: path
       required: true
       schema:
-        type: integer
+        type: string
 
   responses:
     '200':
