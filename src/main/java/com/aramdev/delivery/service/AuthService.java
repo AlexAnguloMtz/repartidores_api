@@ -42,6 +42,7 @@ public class AuthService {
         String accessToken = jwtUtils.createJwt(userDetails);
 
         return new LoginResponse(
+                usuario.getIdUsuario(),
                 usuario.getEmail(),
                 usuario.getRol().getNombre(),
                 accessToken

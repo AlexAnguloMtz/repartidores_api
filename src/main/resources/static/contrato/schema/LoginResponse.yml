@@ -1,9 +1,12 @@
 type: object
 required:
+  - idUsuario
   - email
   - role
   - accessToken
 properties:
+  idUsuario:
+    type: integer
   email:
     type: string
   role:
