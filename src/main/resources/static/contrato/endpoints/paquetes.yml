@@ -4,7 +4,10 @@ get:
     - Paquetes
 
   description: |
+
     **ADMINISTRADOR:** Puede consultar todos los paquetes.
+
+    **REPARTIDOR:** Puede consultar todos los paquetes.
 
     **CLIENTE:** Sólo puede consultar sus propios paquetes. No se le muestran paquetes de otros clientes.
 

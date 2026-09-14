@@ -1,0 +1,28 @@
+get:
+
+  tags:
+    - Paquetes
+
+  description: |
+    
+    **ADMINISTRADOR:** Puede consultar todos los paquetes.
+    
+    **REPARTIDOR:** Puede consultar todos los paquetes.
+    
+    **CLIENTE:** Sólo puede consultar sus propios paquetes. No se le muestran paquetes de otros clientes.
+
+    **Códigos de error:** `PAQUETE_NO_ENCONTRADO`
+
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+
+  responses:
+    '200':
+      content:
+        application/json:
+          schema:
+            $ref: '../schema/PaqueteFullResponse.yml'

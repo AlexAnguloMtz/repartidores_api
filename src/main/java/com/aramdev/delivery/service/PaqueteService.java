@@ -4,6 +4,7 @@ import com.aramdev.delivery.domain.*;
 import com.aramdev.delivery.dto.*;
 import com.aramdev.delivery.exception.BusinessValidationException;
 import com.aramdev.delivery.persistence.*;
+import com.aramdev.delivery.util.CustomUserDetails;
 import com.aramdev.delivery.util.OffsetPaginationRequest;
 import com.aramdev.delivery.util.OffsetPaginationResponse;
 import org.postgresql.geometric.PGpoint;
@@ -57,6 +58,23 @@ public class PaqueteService {
         this.paqueteSpecifications = paqueteSpecifications;
         this.paginator = paginator;
         this.timezone = ZoneId.of(timezone);
+    }
+
+    @Transactional(readOnly = true)
+    public PaqueteFullResponse getPaquete(Long id, CustomUserDetails currentUser) {
+        Paquete paquete = paqueteRepository.findById(id)
+                .orElseThrow(() -> new BusinessValidationException(PaqueteErrorCodes.PAQUETE_NO_ENCONTRADO));
+
+        if (
+                currentUser.hasAuthority("CLIENTE") &&
+                !paquete.getCliente().getIdUsuario().equals(currentUser.getUserId())
+        ) {
+            throw new BusinessValidationException(PaqueteErrorCodes.PAQUETE_NO_ENCONTRADO);
+        }
+
+        List<HistorialSeguimiento> historial = historialSeguimientoRepository.findAllByIdPaquete(id);
+
+        return toFullResponse(paquete, historial);
     }
 
     @GetMapping
@@ -198,4 +216,5 @@ public class PaqueteService {
                 historial.getFechaHora().atZone(timezone).toLocalDateTime()
         );
     }
+
 }

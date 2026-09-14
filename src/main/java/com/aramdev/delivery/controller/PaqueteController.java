@@ -24,15 +24,20 @@ public class PaqueteController {
 
     private final PaqueteService paqueteService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PaqueteFullResponse> getPaquete(
+            @AuthenticationPrincipal CustomUserDetails currentUser,
+            @PathVariable Long id
+    ) {
+        return ResponseEntity.ok(paqueteService.getPaquete(id, currentUser));
+    }
+
     @GetMapping
     public ResponseEntity<OffsetPaginationResponse<PaqueteSummaryResponse>> getPaquetes(
             @AuthenticationPrincipal CustomUserDetails currentUser,
             @Valid GetPaquetesRequest filters,
             @Valid OffsetPaginationRequest pagination
     ) {
-        // TODO
-        //  Decidir que hacer exactamente cuando el current user es un REPARTIDOR.
-
         if (currentUser.hasAuthority("CLIENTE")) {
             filters.setIdCliente(Set.of(currentUser.getUserId()));
         }
