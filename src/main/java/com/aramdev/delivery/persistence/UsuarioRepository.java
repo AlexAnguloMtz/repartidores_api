@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -22,6 +23,9 @@ public interface UsuarioRepository extends
     Optional<Usuario> findByEmailIgnoreCase(String email);
 
     boolean existsByEmailIgnoreCase(String email);
+
+    @EntityGraph(attributePaths = {"rol"})
+    List<Usuario> findAllByRolNombre(String nombre);
 
     @Query(value = """
         select distinct id

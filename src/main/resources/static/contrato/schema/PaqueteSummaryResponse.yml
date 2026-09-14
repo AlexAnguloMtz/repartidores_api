@@ -1,0 +1,80 @@
+type: object
+properties:
+  idPaquete:
+    type: integer
+
+  folio:
+    type: string
+
+  idCliente:
+    type: integer
+
+  nombreCliente:
+    type: string
+
+  idCentroOrigen:
+    type: integer
+
+  nombreCentroOrigen:
+    type: string
+
+  direccionOrigen:
+    type: string
+
+  direccionDestino:
+    type: string
+
+  latitudDestino:
+    type: number
+    format: double
+
+  longitudDestino:
+    type: number
+    format: double
+
+  pesoKg:
+    type: number
+    format: double
+
+  tamanoEtiqueta:
+    type: string
+    enum:
+      - CHICO
+      - MEDIANO
+      - GRANDE
+
+  esPrioritario:
+    type: boolean
+
+  esFragil:
+    type: boolean
+
+  estadoActual:
+    type: string
+    enum:
+      - RECIBIDO
+      - EN_RUTA
+      - EN_REPARTO
+      - ENTREGADO
+
+  fechaCreacion:
+    type: string
+    format: date-time
+
+required:
+  - idPaquete
+  - folio
+  - idCliente
+  - nombreCliente
+  - idCentroOrigen
+  - nombreCentroOrigen
+  - direccionOrigen
+  - direccionDestino
+  - latitudDestino
+  - longitudDestino
+  - pesoKg
+  - tamanoEtiqueta
+  - esPrioritario
+  - esFragil
+  - estadoActual
+  - fechaCreacion

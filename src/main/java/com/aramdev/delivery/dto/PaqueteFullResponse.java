@@ -6,11 +6,13 @@ import com.aramdev.delivery.domain.TamanoEtiqueta;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record PaqueteResponse(
+public record PaqueteFullResponse(
         Long idPaquete,
         String folio,
         Long idCliente,
+        String nombreCliente,
         Integer idCentroOrigen,
+        String nombreCentroOrigen,
         String direccionOrigen,
         String direccionDestino,
         BigDecimal latitudDestino,

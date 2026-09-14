@@ -9,11 +9,15 @@ properties:
 
   idCliente:
     type: integer
-    format: int64
+
+  nombreCliente:
+    type: string
 
   idCentroOrigen:
     type: integer
-    format: int32
+
+  nombreCentroOrigen:
+    type: string
 
   direccionOrigen:
     type: string
@@ -36,8 +40,8 @@ properties:
   tamanoEtiqueta:
     type: string
     enum:
-      - PEQUENA
-      - MEDIANA
+      - CHICO
+      - MEDIANO
       - GRANDE
 
   esPrioritario:
@@ -50,7 +54,7 @@ properties:
     type: string
     enum:
       - RECIBIDO
-      - EN_TRANSITO
+      - EN_RUTA
       - EN_REPARTO
       - ENTREGADO
 
@@ -67,7 +71,9 @@ required:
   - idPaquete
   - folio
   - idCliente
+  - nombreCliente
   - idCentroOrigen
+  - nombreCentroOrigen
   - direccionOrigen
   - direccionDestino
   - latitudDestino

@@ -12,6 +12,7 @@ public class SeederCommandLineRunner implements CommandLineRunner {
     private final UsuarioSeeder usuarioSeeder;
     private final CentroDistribucionSeeder centroDistribucionSeeder;
     private final UnidadSeeder unidadSeeder;
+    private final PaqueteSeeder paqueteSeeder;
 
     @Override
     @Transactional
@@ -19,6 +20,7 @@ public class SeederCommandLineRunner implements CommandLineRunner {
         usuarioSeeder.seed();
         centroDistribucionSeeder.seed();
         unidadSeeder.seed();
+        paqueteSeeder.seed();
     }
 
 }

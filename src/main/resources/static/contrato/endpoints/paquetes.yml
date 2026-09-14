@@ -1,3 +1,165 @@
+get:
+
+  tags:
+    - Paquetes
+
+  description: |
+    **ADMINISTRADOR:** Puede consultar todos los paquetes.
+
+    **CLIENTE:** Sólo puede consultar sus propios paquetes. No se le muestran paquetes de otros clientes.
+
+  parameters:
+
+    - name: idPaquete
+      in: query
+      schema:
+        type: array
+        items:
+          type: integer
+          format: int64
+
+    - name: idCliente
+      in: query
+      schema:
+        type: array
+        items:
+          type: integer
+          format: int64
+
+    - name: idCentroOrigen
+      in: query
+      schema:
+        type: array
+        items:
+          type: integer
+          format: int32
+
+    - name: folio
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+
+    - name: direccionOrigen
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+
+    - name: direccionDestino
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+
+    - name: pesoKgMin
+      in: query
+      schema:
+        type: number
+
+    - name: pesoKgMax
+      in: query
+      schema:
+        type: number
+
+    - name: tamanoEtiqueta
+      in: query
+      style: form
+      explode: true
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+            - CHICO
+            - MEDIANO
+            - GRANDE
+
+    - name: estadoActual
+      in: query
+      style: form
+      explode: true
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+            - RECIBIDO
+            - EN_RUTA
+            - EN_REPARTO
+            - ENTREGADO
+
+    - name: esPrioritario
+      in: query
+      schema:
+        type: boolean
+
+    - name: esFragil
+      in: query
+      schema:
+        type: boolean
+
+    - name: fechaCreacionMin
+      in: query
+      schema:
+        type: string
+        format: date-time
+
+    - name: fechaCreacionMax
+      in: query
+      schema:
+        type: string
+        format: date-time
+
+    - name: pageNumber
+      in: query
+      schema:
+        type: integer
+
+    - name: pageSize
+      in: query
+      schema:
+        type: integer
+
+    - name: sort
+      in: query
+      schema:
+        type: string
+        enum:
+          - idPaquete-asc
+          - idPaquete-desc
+          - folio-asc
+          - folio-desc
+          - pesoKg-asc
+          - pesoKg-desc
+          - estadoActual-asc
+          - estadoActual-desc
+          - fechaCreacion-asc
+          - fechaCreacion-desc
+          - nombreCliente-asc
+          - nombreCliente-desc
+          - nombreCentroOrigen-asc
+          - nombreCentroOrigen-desc
+
+  responses:
+    '200':
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '../schema/OffsetPaginationResponse.yml'
+              - type: object
+                required:
+                  - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '../schema/PaqueteSummaryResponse.yml'
+
 post:
 
   tags:
@@ -21,4 +183,4 @@ post:
       content:
         application/json:
           schema:
-            $ref: '../schema/PaqueteResponse.yml'
+            $ref: '../schema/PaqueteFullResponse.yml'
