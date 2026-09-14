@@ -88,17 +88,17 @@ public class PaqueteService {
         paquete.setCliente(cliente);
         paquete.setCentroOrigen(centroOrigen);
 
-        paqueteRepository.save(paquete);
+        Paquete savedPaquete = paqueteRepository.save(paquete);
 
         HistorialSeguimiento historial = new HistorialSeguimiento();
         historial.setTitulo(EventoPaquete.RECIBIDO.name());
         historial.setDescripcion("Paquete recibido");
-        historial.setPaquete(paquete);
+        historial.setPaquete(savedPaquete);
         historial.setFechaHora(now);
 
         HistorialSeguimiento savedHistorial = historialSeguimientoRepository.save(historial);
 
-        return toResponse(paquete, List.of(savedHistorial));
+        return toResponse(savedPaquete, List.of(savedHistorial));
     }
 
     private String makeFolio() {
